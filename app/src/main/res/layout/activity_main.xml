@@ -22,12 +22,12 @@
         android:layout_marginTop="212dp"
         android:ems="10"
         android:hint="@string/placeholder_email"
-        android:inputType="textPersonName"
+        android:inputType="textEmailAddress"
+        android:textColor="#ffffff"
+        android:textColorHint="#e8e8ed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColorHint="#e8e8ed"
-        android:textColor="#ffffff"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/textPassword"
@@ -39,8 +39,7 @@
         android:layout_marginStart="30dp"
         android:ems="10"
         android:hint="@string/placeholder_password"
-        android:inputType="textPersonName"
-        android:password="true"
+        android:inputType="textPassword"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         app:layout_constraintEnd_toEndOf="parent"
