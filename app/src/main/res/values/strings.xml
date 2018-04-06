@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PayScan</string>
+    <string name="title_email">E-mail:</string>
+    <string name="title_password">Password:</string>
+    <string name="title_login">Log in</string>
+    <string name="option_signup">No account yet? Create one</string>
+    <string name="option_password">Forgot password?</string>
+</resources>
