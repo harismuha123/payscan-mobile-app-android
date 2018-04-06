@@ -1,17 +1,13 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="fontPath">fonts/Raleway-Light.ttf</item>
         <item name="android:windowFullscreen">false</item>
+        <item name="colorControlNormal">#e8e8ed</item>
+        <item name="colorControlActivated">#e8e8ed</item>
+        <item name="colorControlHighlight">#e8e8ed</item>
     </style>
 
 </resources>
