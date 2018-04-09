@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
 
+        /* hide soft keyboard when both fields lose focus */
+        if (!email.hasFocus() && !password.hasFocus()) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+
         if (email.hasFocus()) {
             emailTitle.animate().alpha(1).setDuration(250);
 
