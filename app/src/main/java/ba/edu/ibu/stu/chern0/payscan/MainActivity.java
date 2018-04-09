@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Installing Calligraphy font library, adding default font path leading to Raleway-Light.ttf
+        /* Installing Calligraphy font library, adding default font path leading to Raleway-Light.ttf */
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Raleway-Light.ttf")
                 .setFontAttrId(R.attr.fontPath)
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
                 .build()
         );
         setContentView(R.layout.activity_main);
+
+        /* Find necessary views and bind them to view references */
         email = findViewById(R.id.textEmail);
         password = findViewById(R.id.textPassword);
         emailTitle = findViewById(R.id.emailTitle);
@@ -56,11 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    /* Animations on EditText fields getting/losing focus */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
 
         if (email.hasFocus()) {
             emailTitle.animate().alpha(1).setDuration(250);
+
             email.setHint("");
         } else {
             emailTitle.animate().alpha(0).setDuration(250);
