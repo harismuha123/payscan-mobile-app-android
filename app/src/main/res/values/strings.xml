@@ -7,4 +7,10 @@
     <string name="option_password">Forgot password?</string>
     <string name="placeholder_password">Password</string>
     <string name="placeholder_email">E-mail</string>
+    <string name="title_name">Name:</string>
+    <string name="placeholder_name">Name</string>
+    <string name="option_login">Already a member? Log in</string>
+    <string name="button_signup">Sign up</string>
+    <string name="title_repassword">Retype password:</string>
+    <string name="placeholder_repassword">Retype password</string>
 </resources>

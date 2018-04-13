@@ -1,35 +1,26 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements View.OnFocusChangeListener{
+public class LogInScreen extends AppCompatActivity implements View.OnFocusChangeListener{
 
     private EditText email;
     private EditText password;
     private TextView emailTitle;
     private TextView passwordTitle;
-    private TextView createAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Installing Calligraphy font library, adding default font path leading to Raleway-Light.ttf */
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Raleway-Light.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .addCustomStyle(AppCompatButton.class, android.R.attr.buttonStyle)
-                .build()
-        );
+        CustomFont.install("fonts/Raleway-Light.ttf");
         setContentView(R.layout.activity_main);
 
         /* Find necessary views and bind them to view references */
@@ -37,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
         password = findViewById(R.id.textPassword);
         emailTitle = findViewById(R.id.emailTitle);
         passwordTitle = findViewById(R.id.passwordTitle);
-        createAccount = findViewById(R.id.account);
 
 //        createAccount.setPaintFlags(createAccount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -64,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
 
         if (email.hasFocus()) {
             emailTitle.animate().alpha(1).setDuration(250);
-
             email.setHint("");
         } else {
             emailTitle.animate().alpha(0).setDuration(250);
@@ -78,5 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnFocusChang
             passwordTitle.animate().alpha(0).setDuration(250);
             password.setHint("Password");
         }
+    }
+
+    /* Go to Registration Screen */
+    public void register(View view) {
+        Intent intent = new Intent(LogInScreen.this, RegisterAccount.class);
+        startActivity(intent);
     }
 }
