@@ -20,7 +20,6 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomFont.install("fonts/Raleway-Light.ttf");
         setContentView(R.layout.activity_main);
 
         /* Find necessary views and bind them to view references */
@@ -29,12 +28,8 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
         emailTitle = findViewById(R.id.emailTitle);
         passwordTitle = findViewById(R.id.passwordTitle);
 
-//        createAccount.setPaintFlags(createAccount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
         email.setOnFocusChangeListener(this);
         password.setOnFocusChangeListener(this);
-
-
     }
 
     @Override
