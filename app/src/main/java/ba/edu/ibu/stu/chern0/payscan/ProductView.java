@@ -1,5 +1,6 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
@@ -32,6 +33,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 import static java.security.AccessController.getContext;
 
 public class ProductView extends AppCompatActivity {
@@ -61,7 +64,7 @@ public class ProductView extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        prepareProducts();
+        getProductData();
     }
 
     /* Show and hide toolbar on scroll */
@@ -90,16 +93,16 @@ public class ProductView extends AppCompatActivity {
         });
     }
 
-    /* Add products to list */
+    /* Add products to list
     private void prepareProducts() {
-        getProductData();
-        productList.add(new Product("Alat za brizganje epruveta", 5000, Uri.parse("https://s7.pik.ba/galerija/2017-05/03/10/slika-615156-590a380f7f961-thumb.jpg")));
+        productList = getProductData();
+      /*  productList.add(new Product("Alat za brizganje epruveta", 5000, Uri.parse("https://s7.pik.ba/galerija/2017-05/03/10/slika-615156-590a380f7f961-thumb.jpg")));
         productList.add(new Product("Integralni biskviz za pse", 11, Uri.parse("https://s8.pik.ba/galerija/2017-11/21/02/slika-166790-5a14284d62ee0-thumb.jpg")));
         productList.add(new Product("Pasat 3 karavan dijelovi", 1000, Uri.parse("https://s6.pik.ba/galerija/2016-08/14/12/slika-139597-57b04c0c289c1-thumb.jpg")));
         productList.add(new Product("Pumpa za vodu potopna 600 wati", 42, Uri.parse("https://s8.pik.ba/galerija/2017-11/13/07/slika-59873-5a09e7588206a-thumb.jpg")));
 
         adapter.notifyDataSetChanged();
-    }
+    }*/
 
     /* Convert dp to pixels */
     public int dpToPx(int dp) {
@@ -107,6 +110,7 @@ public class ProductView extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
+    /* Get data from our API */
     public void getProductData() {
         /* instantiate the queue */
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
@@ -116,21 +120,20 @@ public class ProductView extends AppCompatActivity {
         requestQueue.start();
 
         JsonObjectRequest jor = new JsonObjectRequest(
-                Request.Method.GET, "https://payscan-api.herokuapp.com/rest/products", null,
+                Request.Method.GET, "https://payscan-api.herokuapp.com/rest/search/1/arduino", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray data = response.getJSONArray("products");
                             for (int i = 0; i < data.length(); i++) {
-                                String product = "";
                                 JSONObject jsonObject = data.getJSONObject(i);
                                 String productName = jsonObject.getString("name");
                                 String productPrice = jsonObject.getString("price");
-                                String prodctPicture = jsonObject.getString("picture");
+                                String productPicture = jsonObject.getString("picture");
 
-                                product += productName + ", " + productPrice + ", " + prodctPicture + "\n";
-                                Log.i("VOLLEY", product);
+                                productList.add(new Product(productName, productPrice, Uri.parse(productPicture)));
+                                adapter.notifyDataSetChanged();
                             }
                         } catch(JSONException e) {
                             e.printStackTrace();
@@ -145,5 +148,10 @@ public class ProductView extends AppCompatActivity {
                 }
         );
         requestQueue.add(jor);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

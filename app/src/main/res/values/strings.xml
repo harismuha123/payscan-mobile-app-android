@@ -14,4 +14,5 @@
     <string name="title_repassword">Retype password:</string>
     <string name="placeholder_repassword">Retype password</string>
     <string name="product_thumbnail_description">Product thumbnail</string>
+    <string name="API_URL">https://payscan-api.herokuapp.com/rest/products</string>
 </resources>

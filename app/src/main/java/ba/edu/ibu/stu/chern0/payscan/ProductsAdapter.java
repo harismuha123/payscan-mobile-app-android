@@ -34,12 +34,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.getName().setText(product.getName());
-        holder.getPrice().setText(product.getPrice() + " KM");
+        holder.getPrice().setText(product.getPrice());
 
         /* Load images with Glide */
         Glide.with(mContext).load(product.getThumbnail())
                             .apply(new RequestOptions()
-                                .override(75, 100))
+                                .centerCrop())
                             .into(holder.getThumbnail());
 
     }
