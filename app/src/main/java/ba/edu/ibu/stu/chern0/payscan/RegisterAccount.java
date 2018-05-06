@@ -44,7 +44,9 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
 
     /* Go back to Log In Screen */
     public void backToLogin(View view) {
-        Intent intent = new Intent(RegisterAccount.this, LogInScreen.class);
+     /*   Intent intent = new Intent(RegisterAccount.this, LogInScreen.class);
+        startActivity(intent);*/
+        Intent intent = new Intent(RegisterAccount.this, ProductView.class);
         startActivity(intent);
     }
     /* Animations on EditText fields getting/losing focus */

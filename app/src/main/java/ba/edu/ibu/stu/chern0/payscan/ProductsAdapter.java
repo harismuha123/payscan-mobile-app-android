@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
@@ -35,7 +37,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
         holder.getPrice().setText(product.getPrice() + " KM");
 
         /* Load images with Glide */
-        Glide.with(mContext).load(product.getThumbnail()).into(holder.getThumbnail());
+        Glide.with(mContext).load(product.getThumbnail())
+                            .apply(new RequestOptions()
+                                .override(75, 100))
+                            .into(holder.getThumbnail());
 
     }
 
