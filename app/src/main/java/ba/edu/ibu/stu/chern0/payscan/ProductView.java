@@ -38,6 +38,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import static java.security.AccessController.getContext;
 
 public class ProductView extends AppCompatActivity {
+    private int PAGE = 1;
     private RecyclerView recyclerView;
     private ProductsAdapter adapter;
     private List<Product> productList;
@@ -46,18 +47,18 @@ public class ProductView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         setContentView(R.layout.activity_product_view);
+        /* Create collapsing toolbar */
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         initCollapsingToolbar();
 
+        /* Create the RecyclerView & product list */
         recyclerView = findViewById(R.id.recycler_view);
         productList = new ArrayList<>();
         adapter = new ProductsAdapter(this, productList);
 
+        /* Set up RecyclerView */
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
@@ -65,6 +66,18 @@ public class ProductView extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         getProductData();
+        PAGE++;
+
+        /* Call new data page upon reaching the end of previous one */
+        adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
+            @Override
+            public void onBottomReached(int position) {
+                if (PAGE > 0) {
+                    getProductData();
+                    PAGE++;
+                }
+            }
+        });
     }
 
     /* Show and hide toolbar on scroll */
@@ -93,17 +106,6 @@ public class ProductView extends AppCompatActivity {
         });
     }
 
-    /* Add products to list
-    private void prepareProducts() {
-        productList = getProductData();
-      /*  productList.add(new Product("Alat za brizganje epruveta", 5000, Uri.parse("https://s7.pik.ba/galerija/2017-05/03/10/slika-615156-590a380f7f961-thumb.jpg")));
-        productList.add(new Product("Integralni biskviz za pse", 11, Uri.parse("https://s8.pik.ba/galerija/2017-11/21/02/slika-166790-5a14284d62ee0-thumb.jpg")));
-        productList.add(new Product("Pasat 3 karavan dijelovi", 1000, Uri.parse("https://s6.pik.ba/galerija/2016-08/14/12/slika-139597-57b04c0c289c1-thumb.jpg")));
-        productList.add(new Product("Pumpa za vodu potopna 600 wati", 42, Uri.parse("https://s8.pik.ba/galerija/2017-11/13/07/slika-59873-5a09e7588206a-thumb.jpg")));
-
-        adapter.notifyDataSetChanged();
-    }*/
-
     /* Convert dp to pixels */
     public int dpToPx(int dp) {
         Resources r = getResources();
@@ -119,21 +121,33 @@ public class ProductView extends AppCompatActivity {
         /* start the queue */
         requestQueue.start();
 
+        /* Make a new request for a JSON object */
         JsonObjectRequest jor = new JsonObjectRequest(
-                Request.Method.GET, "https://payscan-api.herokuapp.com/rest/search/1/arduino", null,
+                Request.Method.GET,
+                "https://payscan-api.herokuapp.com/rest/search/"+ PAGE +"/counter strike", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray data = response.getJSONArray("products");
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject jsonObject = data.getJSONObject(i);
-                                String productName = jsonObject.getString("name");
-                                String productPrice = jsonObject.getString("price");
-                                String productPicture = jsonObject.getString("picture");
+                            if (data.length() > 1) {
+                                for (int i = 0; i < data.length(); i++) {
+                                    /* Get individual JSON object and its attributes */
+                                    JSONObject jsonObject = data.getJSONObject(i);
+                                    String productName = jsonObject.getString("name");
+                                    String productPrice = jsonObject.getString("price");
+                                    String productPicture = jsonObject.getString("picture");
 
-                                productList.add(new Product(productName, productPrice, Uri.parse(productPicture)));
-                                adapter.notifyDataSetChanged();
+                                    /* Check if product is valid */
+                                    if (!(productName.equals("") && productPrice.equals("") && productPicture.equals("")) &&
+                                            (!(productName.equals("") && productPrice.equals("PO DOGOVORU") && productPicture.equals("")))) {
+                                        productList.add(new Product(productName, productPrice, Uri.parse(productPicture)));
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            } else {
+                                /* say that there are no more pages */
+                                PAGE = 0;
                             }
                         } catch(JSONException e) {
                             e.printStackTrace();
@@ -147,6 +161,7 @@ public class ProductView extends AppCompatActivity {
                     }
                 }
         );
+        /* Add request to Volley asynchronous queue */
         requestQueue.add(jor);
     }
 

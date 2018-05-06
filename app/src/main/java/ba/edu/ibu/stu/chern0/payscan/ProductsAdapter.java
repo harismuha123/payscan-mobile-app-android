@@ -16,6 +16,7 @@ import java.util.List;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private Context mContext;
     private List<Product> productList;
+    private OnBottomReachedListener onBottomReachedListener;
 
     public ProductsAdapter(Context mContext, List<Product> productList) {
         this.mContext = mContext;
@@ -32,6 +33,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        if (position == productList.size() - 1) {
+            onBottomReachedListener.onBottomReached(position);
+        }
+
         Product product = productList.get(position);
         holder.getName().setText(product.getName());
         holder.getPrice().setText(product.getPrice());
@@ -47,5 +52,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     @Override
     public int getItemCount() {
         return productList.size();
+    }
+
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
+        this.onBottomReachedListener = onBottomReachedListener;
     }
 }

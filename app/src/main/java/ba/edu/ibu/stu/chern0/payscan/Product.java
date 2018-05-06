@@ -6,6 +6,7 @@ public class Product {
     private String name;
     private String price;
     private Uri thumbnail;
+    private Uri link;
 
     public Product() {}
 
@@ -13,6 +14,13 @@ public class Product {
         this.name = name;
         this.price = price;
         this.thumbnail = thumbnail;
+    }
+
+    public Product(String name, String price, Uri thumbnail, Uri link) {
+        this.name = name;
+        this.price = price;
+        this.thumbnail = thumbnail;
+        this.link = link;
     }
 
     public String getName() {
@@ -38,4 +46,13 @@ public class Product {
     public void setThumbnail(Uri thumbnail) {
         this.thumbnail = thumbnail;
     }
+
+    public Uri getLink() {
+        return link;
+    }
+
+    public void setLink(Uri link) {
+        this.link = link;
+    }
+
 }
