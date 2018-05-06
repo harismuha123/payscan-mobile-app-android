@@ -2,6 +2,8 @@ package ba.edu.ibu.stu.chern0.payscan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,22 +16,17 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
 
     private EditText email;
     private EditText password;
-    private TextView emailTitle;
-    private TextView passwordTitle;
+
+    /* input layouts (Material Design) */
+    private TextInputLayout emailLayout;
+    private TextInputLayout passwordLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /* Find necessary views and bind them to view references */
-        email = findViewById(R.id.textEmail);
-        password = findViewById(R.id.textPassword);
-        emailTitle = findViewById(R.id.emailTitle);
-        passwordTitle = findViewById(R.id.passwordTitle);
-
-        email.setOnFocusChangeListener(this);
-        password.setOnFocusChangeListener(this);
+        bindViews();
     }
 
     @Override
@@ -47,26 +44,40 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
 
-        if (email.hasFocus()) {
-            emailTitle.animate().alpha(1).setDuration(250);
-            email.setHint("");
-        } else {
-            emailTitle.animate().alpha(0).setDuration(250);
-            email.setHint("E-mail");
+        /* validating email and password field using CustomValidator */
+        if (!password.hasFocus()) {
+            CustomValidator.validatePassword(passwordLayout);
         }
 
-        if (password.hasFocus()) {
-            passwordTitle.animate().alpha(1).setDuration(250);
-            password.setHint("");
-        } else {
-            passwordTitle.animate().alpha(0).setDuration(250);
-            password.setHint("Password");
+        if (!email.hasFocus()) {
+            CustomValidator.validateEmail(emailLayout);
         }
+
+    }
+
+    /* workaround for bug which doesn't allow changing TypeFace of EditText */
+    private void setPasswordTypeface() {
+        emailLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
+        passwordLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
     }
 
     /* Go to Registration Screen */
     public void register(View view) {
         Intent intent = new Intent(LogInScreen.this, RegisterAccount.class);
         startActivity(intent);
+    }
+
+    /* binding views to their components */
+    private void bindViews() {
+        email = findViewById(R.id.textEmail);
+        password = findViewById(R.id.textPassword);
+
+        emailLayout = findViewById(R.id.emailLayout);
+        passwordLayout = findViewById(R.id.passwordLayout);
+        setPasswordTypeface();
+
+        /* set listeners on EditText fields */
+        email.setOnFocusChangeListener(this);
+        password.setOnFocusChangeListener(this);
     }
 }
