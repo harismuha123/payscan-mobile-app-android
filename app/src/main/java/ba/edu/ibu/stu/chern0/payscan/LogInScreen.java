@@ -3,6 +3,7 @@ package ba.edu.ibu.stu.chern0.payscan;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LogInScreen extends AppCompatActivity implements View.OnFocusChangeListener{
-
+    private SharedPreferences shared;
     private EditText email;
     private EditText password;
 
@@ -38,6 +39,15 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /* check for existence of logged in user */
+        shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
+        String username = shared.getString("username", "");
+        if (!username.equals("")) {
+            Intent productIntent = new Intent(LogInScreen.this, ProductView.class);
+            startActivity(productIntent);
+            finish();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -121,13 +131,19 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                 String status = response.getString("status");
                                 progressDialog.cancel();
                                 if (status.equals("success")) {
+                                    /* get current user's username and save to SharedPreferences*/
+                                    String username = response.getString("user_name");
+                                    shared.edit().putString("username", username).apply();
                                     Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
                                     Intent productView = new Intent(LogInScreen.this, ProductView.class);
                                     startActivity(productView);
+                                    finish();
                                 } else if (status.equals("pass_incorrect")) {
                                     Toast.makeText(LogInScreen.this, "The password is incorrect.", Toast.LENGTH_SHORT).show();
                                 } else if (status.equals("email_incorrect")) {
                                     Toast.makeText(LogInScreen.this, "Entered email does not exist in the database.", Toast.LENGTH_SHORT).show();
+                                } else if (status.equals("not_activated")) {
+                                    Toast.makeText(LogInScreen.this, "Your account has not been activated yet.", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

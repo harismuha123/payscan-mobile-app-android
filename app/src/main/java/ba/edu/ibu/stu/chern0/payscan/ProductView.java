@@ -1,6 +1,8 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -152,6 +156,16 @@ public class ProductView extends AppCompatActivity {
         );
         /* Add request to Volley asynchronous queue */
         NetworkQueue.getInstance(this).addToRequestQueue(jor);
+    }
+
+    public void logOut(View view) {
+        SharedPreferences shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
+        shared.edit().clear().apply();
+        /* go back to log in screen */
+        Intent loginIntent = new Intent(ProductView.this, LogInScreen.class);
+        Toast.makeText(ProductView.this, "You are now logged out.", Toast.LENGTH_LONG).show();
+        startActivity(loginIntent);
+        finish();
     }
 
     @Override
