@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{

@@ -3,10 +3,10 @@ package ba.edu.ibu.stu.chern0.payscan;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +24,6 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,8 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static java.security.AccessController.getContext;
 
 public class ProductView extends AppCompatActivity {
     private int PAGE = 1;
@@ -114,17 +111,9 @@ public class ProductView extends AppCompatActivity {
 
     /* Get data from our API */
     public void getProductData() {
-        /* instantiate the queue */
-        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024);
-        Network network = new BasicNetwork(new HurlStack());
-        RequestQueue requestQueue = new RequestQueue(cache, network);
-        /* start the queue */
-        requestQueue.start();
-
         /* Make a new request for a JSON object */
         JsonObjectRequest jor = new JsonObjectRequest(
-                Request.Method.GET,
-                "https://payscan-api.herokuapp.com/rest/search/"+ PAGE +"/counter strike", null,
+                Request.Method.GET,Constants.API_URL + "search/"+ PAGE +"/counter strike", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -162,7 +151,7 @@ public class ProductView extends AppCompatActivity {
                 }
         );
         /* Add request to Volley asynchronous queue */
-        requestQueue.add(jor);
+        NetworkQueue.getInstance(this).addToRequestQueue(jor);
     }
 
     @Override

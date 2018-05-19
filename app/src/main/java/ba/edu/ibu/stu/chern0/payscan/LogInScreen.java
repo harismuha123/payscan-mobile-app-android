@@ -1,15 +1,28 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LogInScreen extends AppCompatActivity implements View.OnFocusChangeListener{
@@ -20,6 +33,8 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
     /* input layouts (Material Design) */
     private TextInputLayout emailLayout;
     private TextInputLayout passwordLayout;
+
+    private boolean hasLogIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +59,17 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
 
-        /* validating email and password field using CustomValidator */
-        if (!password.hasFocus()) {
-            CustomValidator.validatePassword(passwordLayout);
-        }
+        /* check if log in button has been clicked first; if not, do not validate */
+        if (hasLogIn) {
+            /* validating email and password field using CustomValidator */
+            if (!password.hasFocus()) {
+                CustomValidator.validatePassword(passwordLayout);
+            }
 
-        if (!email.hasFocus()) {
-            CustomValidator.validateEmail(emailLayout);
+            if (!email.hasFocus()) {
+                CustomValidator.validateEmail(emailLayout);
+            }
         }
-
     }
 
     /* workaround for bug which doesn't allow changing TypeFace of EditText */
@@ -79,5 +96,55 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
         /* set listeners on EditText fields */
         email.setOnFocusChangeListener(this);
         password.setOnFocusChangeListener(this);
+    }
+
+    public void logIn(View view) {
+        hasLogIn = true;
+        /* check if fields are empty */
+        if (CustomValidator.isValid(emailLayout, passwordLayout)) {
+            final ProgressDialog progressDialog = new ProgressDialog(LogInScreen.this, R.style.Theme_AppCompat_DayNight_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Logging in...");
+            progressDialog.show();
+
+            HashMap<String, String> data = new HashMap<String, String>();
+            data.put("email", email.getText().toString());
+            data.put("password", password.getText().toString());
+
+            JsonObjectRequest jor = new JsonObjectRequest(
+                    Request.Method.POST, Constants.API_URL + "db/get", new JSONObject(data),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String status = response.getString("status");
+                                progressDialog.cancel();
+                                if (status.equals("success")) {
+                                    Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+                                    Intent productView = new Intent(LogInScreen.this, ProductView.class);
+                                    startActivity(productView);
+                                } else if (status.equals("pass_incorrect")) {
+                                    Toast.makeText(LogInScreen.this, "The password is incorrect.", Toast.LENGTH_SHORT).show();
+                                } else if (status.equals("email_incorrect")) {
+                                    Toast.makeText(LogInScreen.this, "Entered email does not exist in the database.", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("VOLLEY", "Error");
+                        }
+                    }
+            );
+            /* Add request to Volley asynchronous queue */
+            NetworkQueue.getInstance(this).addToRequestQueue(jor);
+        } else {
+            Toast.makeText(this, "Please enter proper credentials.", Toast.LENGTH_LONG).show();
+        }
     }
 }

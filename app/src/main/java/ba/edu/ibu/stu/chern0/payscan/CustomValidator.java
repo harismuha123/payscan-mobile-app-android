@@ -1,10 +1,7 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
-import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.text.Html;
-import android.util.Patterns;
-import android.widget.EditText;
 
 public class CustomValidator {
 
@@ -79,5 +76,9 @@ public class CustomValidator {
         }
 
         return valid;
+    }
+
+    public static  boolean isValid(TextInputLayout emailLayout, TextInputLayout passwordLayout) {
+        return (validateEmail(emailLayout) && validatePassword(passwordLayout));
     }
 }
