@@ -22,7 +22,7 @@
                 android:title="Nekretnine" />
             <item
                 android:id="@+id/nav_mobile"
-                android:title="Mobilini uređaji" />
+                android:title="Mobilni uređaji" />
             <item
                 android:id="@+id/nav_computers"
                 android:title="Kompjuteri" />
