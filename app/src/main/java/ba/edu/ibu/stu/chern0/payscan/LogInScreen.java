@@ -43,7 +43,7 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
         shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
         String username = shared.getString("username", "");
         if (!username.equals("")) {
-            Intent productIntent = new Intent(LogInScreen.this, ProductView.class);
+            Intent productIntent = new Intent(LogInScreen.this, ProductDrawer.class);
             startActivity(productIntent);
             finish();
         }
@@ -135,7 +135,7 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                     String username = response.getString("user_name");
                                     shared.edit().putString("username", username).apply();
                                     Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
-                                    Intent productView = new Intent(LogInScreen.this, ProductView.class);
+                                    Intent productView = new Intent(LogInScreen.this, ProductDrawer.class);
                                     startActivity(productView);
                                     finish();
                                 } else if (status.equals("pass_incorrect")) {

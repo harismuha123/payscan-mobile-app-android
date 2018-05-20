@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+        <group android:checkableBehavior="single"
+            android:id="@+id/profile">
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_reply_all_black_24dp"
+                android:title="@string/log_out_nav" />
+        </group>
+
+  <!--  <item android:title="@string/categories_nav"> -->
+        <group android:checkableBehavior="single"
+            android:id="@+id/category">
+            <item
+                android:id="@+id/nav_vehicles"
+                android:title="Vozila" />
+            <item
+                android:id="@+id/nav_realestate"
+                android:title="Nekretnine" />
+            <item
+                android:id="@+id/nav_mobile"
+                android:title="Mobilini uređaji" />
+            <item
+                android:id="@+id/nav_computers"
+                android:title="Kompjuteri" />
+            <item
+                android:id="@+id/nav_technology"
+                android:title="Tehnika" />
+            <item
+                android:id="@+id/nav_jewelry"
+                android:title="Nakit i satovi" />
+            <item
+                android:id="@+id/nav_home"
+                android:title="Literatura" />
+            <item
+                android:id="@+id/nav_music"
+                android:title="Muzička oprema" />
+            <item
+                android:id="@+id/nav_art"
+                android:title="Umjetnost" />
+            <item
+                android:id="@+id/nav_sport"
+                android:title="Sportska operma" />
+            <item
+                android:id="@+id/nav_tickets"
+                android:title="Karte" />
+            <item
+                android:id="@+id/nav_animals"
+                android:title="Životinje" />
+            <item
+                android:id="@+id/nav_gaming"
+                android:title="Video igre" />
+            <item
+                android:id="@+id/nav_collectors"
+                android:title="Kolekcionarstvo" />
+            <item
+                android:id="@+id/nav_antiques"
+                android:title="Antikviteti" />
+            <item
+                android:id="@+id/nav_clothing"
+                android:title="Odjeća i obuća" />
+            <item
+                android:id="@+id/nav_services"
+                android:title="Servisi i usluge" />
+            <item
+                android:id="@+id/nav_jobs"
+                android:title="Poslovi" />
+            <item
+                android:id="@+id/nav_toys"
+                android:title="Igre i igračke" />
+            <item
+                android:id="@+id/nav_baby"
+                android:title="Bebe" />
+            <item
+                android:id="@+id/nav_rest"
+                android:title="Sve ostalo" />
+        </group>
+    <!--   </item> -->
+</menu>

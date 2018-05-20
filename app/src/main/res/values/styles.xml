@@ -9,8 +9,13 @@
         <item name="colorControlActivated">#e8e8ed</item>
         <item name="colorControlHighlight">#e8e8ed</item>
     </style>
+
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">#e8e8ed</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
