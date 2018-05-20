@@ -43,6 +43,8 @@ public class ProductView extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProductsAdapter adapter;
     private List<Product> productList;
+    private int category;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,10 @@ public class ProductView extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initCollapsingToolbar();
+
+        /* get category from previous activity */
+        intent = getIntent();
+        category = intent.getIntExtra("category", 1);
 
         /* Create the RecyclerView & product list */
         recyclerView = findViewById(R.id.recycler_view);
@@ -117,7 +123,7 @@ public class ProductView extends AppCompatActivity {
     public void getProductData() {
         /* Make a new request for a JSON object */
         JsonObjectRequest jor = new JsonObjectRequest(
-                Request.Method.GET,Constants.API_URL + "search/"+ PAGE +"/counter strike", null,
+                Request.Method.GET,Constants.API_URL + "category/"+ category + "/" + PAGE, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

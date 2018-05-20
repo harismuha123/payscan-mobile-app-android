@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -48,6 +50,9 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     private RecyclerView recyclerView;
     private ProductsAdapter adapter;
     private List<Product> productList;
+    private HashMap<String, Integer> categories;
+    private SharedPreferences shared;
+    private TextView emailText, usernameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,12 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_product_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
+        String username = shared.getString("username", "");
+        String email = shared.getString("email", "");
+
+
     //    initCollapsingToolbar();
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +75,32 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                         .setAction("Action", null).show();
             }
         });*/
+       /* define all category strings */
+        categories = new HashMap<String, Integer>();
+        categories.put("Vozila", 1);
+        categories.put("Nekretnine", 2);
+        categories.put("Mobilni uređaji", 3);
+        categories.put("Kompjuteri", 5);
+        categories.put("Tehnika", 14);
+        categories.put("Nakit i satovi", 68);
+        categories.put("Moj dom", 701);
+        categories.put("Literatura", 16);
+        categories.put("Muzička oprema", 67);
+        categories.put("Umjetnost", 69);
+        categories.put("Sportska oprema", 171);
+        categories.put("Karte", 179);
+        categories.put("Životinje", 208);
+        categories.put("Biznis i industrija", 224);
+        categories.put("Ljepota i zdravlje", 276);
+        categories.put("Video igre", 289);
+        categories.put("Kolekcionarstvo", 435);
+        categories.put("Antikviteti", 455);
+        categories.put("Odjeća i obuća", 465);
+        categories.put("Servisi i usluge", 2159);
+        categories.put("Poslovi", 2286);
+        categories.put("Igre i igračke", 283);
+        categories.put("Bebe", 371);
+        categories.put("Sve ostalo", 328);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -73,6 +110,15 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        /* Set logged in user's credentials inside navbar */
+        emailText = headerView.findViewById(R.id.nav_email);
+        usernameText = headerView.findViewById(R.id.nav_username);
+        emailText.setText(email);
+        usernameText.setText(username);
+
+
 
         /* Create the RecyclerView & product list */
         recyclerView = findViewById(R.id.recycler_view);
@@ -217,6 +263,13 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             case R.id.nav_logout:
                 logOut(null);
                 break;
+            default:
+                int id = categories.get(item.getTitle());
+                Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);
+                categoryIntent.putExtra("category", id);
+                startActivity(categoryIntent);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
         }
         return true;
     }

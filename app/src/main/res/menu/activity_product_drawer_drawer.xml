@@ -34,6 +34,9 @@
                 android:title="Nakit i satovi" />
             <item
                 android:id="@+id/nav_home"
+                android:title="Moj dom" />
+            <item
+                android:id="@+id/nav_literature"
                 android:title="Literatura" />
             <item
                 android:id="@+id/nav_music"
@@ -50,6 +53,12 @@
             <item
                 android:id="@+id/nav_animals"
                 android:title="Životinje" />
+            <item
+                android:id="@+id/nav_business"
+                android:title="Biznis i industrija" />
+            <item
+                android:id="@+id/nav_health"
+                android:title="Ljepota i zdravlje" />
             <item
                 android:id="@+id/nav_gaming"
                 android:title="Video igre" />

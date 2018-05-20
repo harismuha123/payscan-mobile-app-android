@@ -134,6 +134,9 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                     /* get current user's username and save to SharedPreferences*/
                                     String username = response.getString("user_name");
                                     shared.edit().putString("username", username).apply();
+                                    String email = response.getString("email");
+                                    shared.edit().putString("email", email).apply();
+                                    /* make Toast message*/
                                     Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
                                     Intent productView = new Intent(LogInScreen.this, ProductDrawer.class);
                                     startActivity(productView);
