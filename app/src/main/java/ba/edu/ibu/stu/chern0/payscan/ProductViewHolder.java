@@ -9,11 +9,22 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
     private TextView name, price;
     private ImageView thumbnail;
 
-    public ProductViewHolder(View view) {
+    public ProductViewHolder(View view, final ProductsAdapter.OnItemClickListener listener) {
         super(view);
         name = view.findViewById(R.id.name);
         price = view.findViewById(R.id.price);
         thumbnail = view.findViewById(R.id.thumbnail);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            }
+        });
     }
 
     public TextView getName() {

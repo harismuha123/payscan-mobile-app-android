@@ -26,4 +26,5 @@
     <string name="log_out_nav">Odjava</string>
     <string name="nav_account_info">Korisnički nalog</string>
     <string name="categories_nav">Kategorije</string>
+    <string name="buy_button">Kupi</string>
 </resources>

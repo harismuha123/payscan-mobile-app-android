@@ -24,7 +24,8 @@
         <activity
             android:name=".ProductDrawer"
             android:label="@string/title_activity_product_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ArticleActivity" />
     </application>
 
 </manifest>

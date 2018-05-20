@@ -17,6 +17,16 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private List<Product> productList;
     private OnBottomReachedListener onBottomReachedListener;
 
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
     public ProductsAdapter(Context mContext, List<Product> productList) {
         this.mContext = mContext;
         this.productList = productList;
@@ -26,8 +36,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                                      .inflate(R.layout.product_card, parent, false);
-        return new ProductViewHolder(itemView);
+                .inflate(R.layout.product_card, parent, false);
+        return new ProductViewHolder(itemView, mListener);
     }
 
     @Override
@@ -42,9 +52,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
 
         /* Load images with Glide */
         Glide.with(mContext).load(product.getThumbnail())
-                            .apply(new RequestOptions()
-                                .centerCrop())
-                            .into(holder.getThumbnail());
+                .apply(new RequestOptions()
+                        .centerCrop())
+                .into(holder.getThumbnail());
 
     }
 
