@@ -21,7 +21,10 @@
         </activity>
         <activity android:name=".RegisterAccount" />
         <activity android:name=".ProductView" />
-        <activity android:name=".ArticleActivity"></activity>
+        <activity
+            android:name=".ProductDrawer"
+            android:label="@string/title_activity_product_drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

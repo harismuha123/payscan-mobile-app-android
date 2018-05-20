@@ -16,5 +16,14 @@
     <string name="product_thumbnail_description">Product thumbnail</string>
     <string name="API_URL">https://payscan-api.herokuapp.com/rest/products</string>
     <string name="log_out">Log out</string>
-    <string name="buy_button">Kupi</string>
+    <string name="title_activity_product_drawer">Najnoviji proizvodi</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="log_out_nav">Odjava</string>
+    <string name="nav_account_info">Korisnički nalog</string>
+    <string name="categories_nav">Kategorije</string>
 </resources>
