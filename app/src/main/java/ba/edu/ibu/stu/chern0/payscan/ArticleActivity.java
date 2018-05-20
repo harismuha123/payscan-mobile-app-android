@@ -1,5 +1,6 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -89,6 +92,11 @@ public class ArticleActivity extends AppCompatActivity {
         NetworkQueue.getInstance(this).addToRequestQueue(jor);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     private void bindViews() {
         articleImage = findViewById(R.id.articleImage);
         articleName = findViewById(R.id.articleName);
@@ -101,4 +109,6 @@ public class ArticleActivity extends AppCompatActivity {
         detailText = findViewById(R.id.detailText);
         detailText.setMovementMethod(new ScrollingMovementMethod());
     }
+
+
 }
