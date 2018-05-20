@@ -16,4 +16,5 @@
     <string name="product_thumbnail_description">Product thumbnail</string>
     <string name="API_URL">https://payscan-api.herokuapp.com/rest/products</string>
     <string name="log_out">Log out</string>
+    <string name="buy_button">Kupi</string>
 </resources>

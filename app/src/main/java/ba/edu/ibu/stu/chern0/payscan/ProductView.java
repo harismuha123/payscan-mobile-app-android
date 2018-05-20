@@ -66,6 +66,15 @@ public class ProductView extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(new ProductsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(ProductView.this, ArticleActivity.class);
+                intent.putExtra("link", productList.get(position).getLink().toString());
+                startActivity(intent);
+            }
+        });
+
         getProductData();
         PAGE++;
 
@@ -130,11 +139,12 @@ public class ProductView extends AppCompatActivity {
                                     String productName = jsonObject.getString("name");
                                     String productPrice = jsonObject.getString("price");
                                     String productPicture = jsonObject.getString("picture");
+                                    String productLink = jsonObject.getString("link");
 
                                     /* Check if product is valid */
                                     if (!(productName.equals("") && productPrice.equals("") && productPicture.equals("")) &&
                                             (!(productName.equals("") && productPrice.equals("PO DOGOVORU") && productPicture.equals("")))) {
-                                        productList.add(new Product(productName, productPrice, Uri.parse(productPicture)));
+                                        productList.add(new Product(productName, productPrice, Uri.parse(productPicture), Uri.parse(productLink)));
                                         adapter.notifyDataSetChanged();
                                     }
                                 }
