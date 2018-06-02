@@ -24,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-
-import me.grantland.widget.AutofitHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ArticleActivity extends AppCompatActivity {
@@ -103,8 +101,6 @@ public class ArticleActivity extends AppCompatActivity {
         articleImage = findViewById(R.id.articleImage);
         articleName = findViewById(R.id.articleName);
 
-        AutofitHelper.create(articleName);
-
         priceText = findViewById(R.id.priceText);
         locationText = findViewById(R.id.locationText);
         categoryText = findViewById(R.id.categoryText);
@@ -119,11 +115,4 @@ public class ArticleActivity extends AppCompatActivity {
         intent.setPackage("com.google.android.apps.maps");
         startActivity(intent);
     }
-
-    public void testFunc(View v) {
-        Intent intent = new Intent(this, CreateArticleActivity.class);
-        startActivity(intent);
-    }
-
-
 }

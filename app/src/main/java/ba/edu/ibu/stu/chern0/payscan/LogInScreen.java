@@ -136,6 +136,8 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                     shared.edit().putString("username", username).apply();
                                     String email = response.getString("email");
                                     shared.edit().putString("email", email).apply();
+                                    String id = response.getString("id");
+                                    shared.edit().putString("id", id).apply();
                                     /* make Toast message*/
                                     Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
                                     Intent productView = new Intent(LogInScreen.this, ProductDrawer.class);

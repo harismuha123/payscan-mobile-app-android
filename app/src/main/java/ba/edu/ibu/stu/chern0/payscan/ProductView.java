@@ -64,6 +64,14 @@ public class ProductView extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         productList = new ArrayList<>();
         adapter = new ProductsAdapter(this, productList);
+        adapter.setOnItemClickListener(new ProductsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(ProductView.this, ArticleActivity.class);
+                intent.putExtra("link", productList.get(position).getLink().toString());
+                startActivity(intent);
+            }
+        });
 
         /* Set up RecyclerView */
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);

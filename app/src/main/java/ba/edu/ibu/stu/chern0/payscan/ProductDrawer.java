@@ -1,9 +1,13 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,9 +16,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,6 +32,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +40,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +65,8 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     private HashMap<String, Integer> categories;
     private SharedPreferences shared;
     private TextView emailText, usernameText;
+    private ImageView profilePicture;
+    private static int RESULT_LOAD_IMAGE = 16;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +78,21 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
         String username = shared.getString("username", "");
         String email = shared.getString("email", "");
+        String picture = shared.getString("image", "");
 
-
-    //    initCollapsingToolbar();
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        //    initCollapsingToolbar();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(ProductDrawer.this, CreateArticleActivity.class);
+                startActivity(intent);
+            /*    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
-        });*/
-       /* define all category strings */
+        });
+
+        /* define all category strings */
         categories = new HashMap<String, Integer>();
         categories.put("Vozila", 1);
         categories.put("Nekretnine", 2);
@@ -115,10 +132,16 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         /* Set logged in user's credentials inside navbar */
         emailText = headerView.findViewById(R.id.nav_email);
         usernameText = headerView.findViewById(R.id.nav_username);
+        profilePicture = headerView.findViewById(R.id.profilePicture);
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeProfilePicture(view);
+            }
+        });
         emailText.setText(email);
         usernameText.setText(username);
-
-
 
         /* Create the RecyclerView & product list */
         recyclerView = findViewById(R.id.recycler_view);
@@ -153,6 +176,14 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 }
             }
         });
+
+        /* Load picture if nothing exists */
+        if (!picture.equals("")) {
+            Glide.with(ProductDrawer.this).load(picture)
+                    .apply(new RequestOptions()
+                            .centerCrop())
+                    .into(profilePicture);
+        }
 
     }
 
@@ -272,5 +303,92 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+    /* Change profile picture */
+    public void changeProfilePicture(View view) {
+        /* create a new alert */
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProductDrawer.this);
+        builder.setMessage("Would you like to change your profile picture?").setTitle("Upload a photo");
+        /* add new buttons */
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent photoPicker = new Intent(Intent.ACTION_PICK);
+                photoPicker.setType("image/*");
+                startActivityForResult(photoPicker, RESULT_LOAD_IMAGE);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try {
+                /* Get an image and convert it to Base64 */
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] imageBytes = baos.toByteArray();
+                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                /* Show an 'Uploading...' progress screen */
+                final ProgressDialog progressDialog = new ProgressDialog(ProductDrawer.this, R.style.Theme_AppCompat_DayNight_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Uploading profile picture...");
+                progressDialog.show();
+
+                HashMap<String, String> user = new HashMap<>();
+                String userId = shared.getString("id", "");
+                user.put("image", encodedImage);
+                user.put("id", userId);
+
+                /* upload new image to Imgur server */
+                JsonObjectRequest jor = new JsonObjectRequest(
+                        Request.Method.POST, Constants.API_URL + "user/upload", new JSONObject(user),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String imageLink = response.getString("link");
+                                    shared.edit().putString("image", imageLink).apply();
+                                    progressDialog.cancel();
+                                    Glide.with(ProductDrawer.this).load(imageLink)
+                                            .apply(new RequestOptions()
+                                                    .centerCrop())
+                                            .into(profilePicture);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("VOLLEY", "Error");
+                            }
+                        }
+                );
+                /* Add request to Volley asynchronous queue */
+                NetworkQueue.getInstance(this).addToRequestQueue(jor);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(this, "You haven't picked an image",Toast.LENGTH_LONG).show();
+        }
     }
 }

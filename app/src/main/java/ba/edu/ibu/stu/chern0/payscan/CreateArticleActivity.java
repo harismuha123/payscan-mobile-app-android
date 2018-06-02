@@ -1,6 +1,7 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CreateArticleActivity extends AppCompatActivity {
 
@@ -111,5 +114,8 @@ public class CreateArticleActivity extends AppCompatActivity {
         return false;
     }
 
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 }
