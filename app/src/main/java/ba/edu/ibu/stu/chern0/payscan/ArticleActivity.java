@@ -120,5 +120,10 @@ public class ArticleActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void testFunc(View v) {
+        Intent intent = new Intent(this, CreateArticleActivity.class);
+        startActivity(intent);
+    }
+
 
 }
