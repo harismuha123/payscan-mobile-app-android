@@ -27,4 +27,8 @@
     <string name="nav_account_info">Korisnički nalog</string>
     <string name="categories_nav">Kategorije</string>
     <string name="buy_button">Kupi</string>
+    <string name="price_tag">Cijena</string>
+    <string name="location_tag">Lokacija</string>
+    <string name="category_tag">Kategorija</string>
+    <string name="seller_tag">Prodavač</string>
 </resources>

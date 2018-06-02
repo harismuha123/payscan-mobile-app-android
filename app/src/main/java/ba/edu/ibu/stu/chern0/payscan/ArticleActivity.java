@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import me.grantland.widget.AutofitHelper;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ArticleActivity extends AppCompatActivity {
@@ -101,6 +103,8 @@ public class ArticleActivity extends AppCompatActivity {
         articleImage = findViewById(R.id.articleImage);
         articleName = findViewById(R.id.articleName);
 
+        AutofitHelper.create(articleName);
+
         priceText = findViewById(R.id.priceText);
         locationText = findViewById(R.id.locationText);
         categoryText = findViewById(R.id.categoryText);
@@ -108,6 +112,12 @@ public class ArticleActivity extends AppCompatActivity {
 
         detailText = findViewById(R.id.detailText);
         detailText.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    public void openLocation(View v) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="+locationText.getText().toString()));
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
     }
 
 
