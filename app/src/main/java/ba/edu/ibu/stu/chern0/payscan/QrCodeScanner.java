@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.zxing.Result;
 
@@ -46,6 +47,7 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
         Log.e("format", rawResult.getBarcodeFormat().toString());
         Intent intent = new Intent();
         intent.putExtra("text", rawResult.getText());
+        Toast.makeText(this, rawResult.getText(), Toast.LENGTH_LONG).show();
         setResult(RESULT_OK, intent);
         finish();
     }
