@@ -382,6 +382,10 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             case R.id.nav_logout:
                 logOut(null);
                 break;
+            case R.id.nav_scan:
+                Intent intent = new Intent(ProductDrawer.this, QrCodeScanner.class);
+                startActivity(intent);
+                break;
             default:
                 int id = categories.get(item.getTitle());
                 Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);

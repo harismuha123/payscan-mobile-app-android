@@ -34,6 +34,7 @@ public class ArticleActivity extends AppCompatActivity {
     private ImageView articleImage;
     private TextView articleName, priceText, locationText,
                      categoryText, sellerText, detailText;
+    private JSONObject product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class ArticleActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            product = response;
                             /* Get individual JSON object and its attributes */
                             String productName = response.getString("name");
                             String productPrice = response.getString("price");
@@ -113,6 +115,12 @@ public class ArticleActivity extends AppCompatActivity {
     public void openLocation(View v) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q="+locationText.getText().toString()));
         intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
+    }
+
+    public void displayQr(View view) {
+        Intent intent = new Intent(ArticleActivity.this, ProductQrCode.class);
+        intent.putExtra("product", product.toString());
         startActivity(intent);
     }
 }

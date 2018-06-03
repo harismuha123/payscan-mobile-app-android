@@ -9,6 +9,10 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_reply_all_black_24dp"
                 android:title="@string/log_out_nav" />
+            <item
+                android:id="@+id/nav_scan"
+                android:icon="@drawable/ic_shopping_cart_black_24dp"
+                android:title="Kupi artikal" />
         </group>
 
   <!--  <item android:title="@string/categories_nav"> -->
