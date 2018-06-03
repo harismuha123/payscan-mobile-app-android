@@ -10,7 +10,7 @@ public class CustomValidator {
         String passwordText = passwordLayout.getEditText().getText().toString();
         if (passwordText.length() < 8 ) {
             passwordLayout.setError(Html.fromHtml(
-                    "<font color='#ffffff'><em>The password should contain at least 8 characters.</em></font>"));
+                    "<font color='#ffffff'><em>Šifra treba sadržati barem 8 karaktera.</em></font>"));
             //passwordLayout.getEditText().getBackground().setColorFilter();
             return false;
         } else {
@@ -24,7 +24,7 @@ public class CustomValidator {
         String emailText = emailLayout.getEditText().getText().toString();
 
         if (emailText.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            emailLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Please enter a valid email.</em></font>"));
+            emailLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Molimo unesite validnu email adresu.</em></font>"));
             return false;
         } else {
             emailLayout.setError(null);
@@ -38,7 +38,7 @@ public class CustomValidator {
         String passwordText = passwordLayout.getEditText().getText().toString();
 
         if(rePasswordText.isEmpty() || !rePasswordText.equals(passwordText)) {
-            rePasswordLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Passwords do not match.</em></font>"));
+            rePasswordLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Šifre se ne podudaraju.</em></font>"));
             return false;
         } else {
             rePasswordLayout.setError(null);
@@ -51,13 +51,13 @@ public class CustomValidator {
         String nameText = nameLayout.getEditText().getText().toString();
 
         if (nameText.isEmpty()) {
-            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Please enter your name.</em></font>"));
+            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Molimo unesite ime.</em></font>"));
             return false;
         } else if (nameText.length() < 5) {
-            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Your name has to be at least 5 characters long.</em></font>"));
+            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Ime treba biti dugo barem 5 karaktera.</em></font>"));
             return false;
         } else if (nameText.length() > 50) {
-            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Your name can't be longer than 50 characters.</em></font>"));
+            nameLayout.setError(Html.fromHtml("<font color='#ffffff'><em>Ime ne smije biti duže od 50 karaktera.</em></font>"));
             return false;
         } else {
             nameLayout.setError(null);
