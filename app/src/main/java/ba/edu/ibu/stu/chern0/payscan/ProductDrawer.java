@@ -1,6 +1,7 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +17,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
@@ -59,6 +62,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class ProductDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private NavigationView navigationView;
     private int PAGE = 1;
+    private int SEARCH_PAGE = 1;
+    private int MODE = 0;
     private RecyclerView recyclerView;
     private ProductsAdapter adapter;
     private List<Product> productList;
@@ -67,6 +72,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     private TextView emailText, usernameText;
     private ImageView profilePicture;
     private static int RESULT_LOAD_IMAGE = 16;
+    private String searchTerm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             public void onClick(View view) {
                 Intent intent = new Intent(ProductDrawer.this, CreateArticleActivity.class);
                 startActivity(intent);
+                finish();
             /*    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
             }
@@ -170,9 +177,16 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
             @Override
             public void onBottomReached(int position) {
-                if (PAGE > 0) {
-                    getProductData();
-                    PAGE++;
+                if (MODE == 0) {
+                    if (PAGE > 0) {
+                        getProductData();
+                        PAGE++;
+                    }
+                } else {
+                    if (SEARCH_PAGE > 0) {
+                        SEARCH_PAGE++;
+                        getSearchProductData(searchTerm);
+                    }
                 }
             }
         });
@@ -195,6 +209,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
 
     /* Get data from our API */
     public void getProductData() {
+        MODE = 0;
         /* Make a new request for a JSON object */
         JsonObjectRequest jor = new JsonObjectRequest(
                 Request.Method.GET,Constants.API_URL + "products/"+ PAGE, null,
@@ -222,6 +237,52 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                             } else {
                                 /* say that there are no more pages */
                                 PAGE = 0;
+                            }
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", "Error");
+                    }
+                }
+        );
+        /* Add request to Volley asynchronous queue */
+        NetworkQueue.getInstance(this).addToRequestQueue(jor);
+    }
+
+    public void getSearchProductData(String term) {
+        MODE = 1;
+        /* Make a new request for a JSON object */
+        JsonObjectRequest jor = new JsonObjectRequest(
+                Request.Method.GET,Constants.API_URL + "search/"+ SEARCH_PAGE + "/" + term, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray data = response.getJSONArray("products");
+                            if (data.length() > 1) {
+                                for (int i = 0; i < data.length(); i++) {
+                                    /* Get individual JSON object and its attributes */
+                                    JSONObject jsonObject = data.getJSONObject(i);
+                                    String productName = jsonObject.getString("name");
+                                    String productPrice = jsonObject.getString("price");
+                                    String productPicture = jsonObject.getString("picture");
+                                    String productLink = jsonObject.getString("link");
+
+                                    /* Check if product is valid */
+                                    if (!(productName.equals("") && productPrice.equals("") && productPicture.equals("")) &&
+                                            (!(productName.equals("") && productPrice.equals("PO DOGOVORU") && productPicture.equals("")))) {
+                                        productList.add(new Product(productName, productPrice, Uri.parse(productPicture), Uri.parse(productLink)));
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            } else {
+                                /* say that there are no more pages */
+                                SEARCH_PAGE = 0;
                             }
                         } catch(JSONException e) {
                             e.printStackTrace();
@@ -267,6 +328,33 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.product_drawer, menu);
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchTerm = query;
+                productList.clear();
+                adapter.notifyDataSetChanged();
+                getSearchProductData(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    SEARCH_PAGE = 1;
+                    productList.clear();
+                    adapter.notifyDataSetChanged();
+                    getProductData();
+                }
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(queryTextListener);
         return true;
     }
 
@@ -278,7 +366,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
