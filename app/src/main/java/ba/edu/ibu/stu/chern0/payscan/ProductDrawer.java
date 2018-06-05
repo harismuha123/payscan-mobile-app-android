@@ -385,6 +385,8 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             case R.id.nav_scan:
                 Intent intent = new Intent(ProductDrawer.this, QrCodeScanner.class);
                 startActivity(intent);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_edit:
                 Intent intent2 = new Intent(ProductDrawer.this, EditProfileActivity.class);
@@ -395,8 +397,8 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);
                 categoryIntent.putExtra("category", id);
                 startActivity(categoryIntent);
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
+                DrawerLayout drawer2 = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer2.closeDrawer(GravityCompat.START);
         }
         return true;
     }

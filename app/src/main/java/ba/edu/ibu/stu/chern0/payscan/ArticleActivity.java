@@ -24,7 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ArticleActivity extends AppCompatActivity {
@@ -139,8 +142,11 @@ public class ArticleActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void displayQr(View view) {
+    public void displayQr(View view) throws JSONException {
         Intent intent = new Intent(ArticleActivity.this, ProductQrCode.class);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        String format = simpleDateFormat.format(new Date());
+        product.put("timestamp", format);
         intent.putExtra("product", product.toString());
         startActivity(intent);
     }
