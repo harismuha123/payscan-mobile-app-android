@@ -18,7 +18,6 @@
         <activity android:name=".LogInScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,7 +30,8 @@
         <activity android:name=".ArticleActivity" />
         <activity android:name=".CreateArticleActivity" />
         <activity android:name=".QrCodeScanner" />
-        <activity android:name=".ProductQrCode"></activity>
+        <activity android:name=".ProductQrCode" />
+        <activity android:name=".EditProfileActivity" />
     </application>
 
 </manifest>

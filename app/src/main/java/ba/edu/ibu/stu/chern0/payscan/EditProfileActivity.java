@@ -1,5 +1,6 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -7,8 +8,21 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -35,12 +49,84 @@ public class EditProfileActivity extends AppCompatActivity {
         setPasswordTypeface();
     }
 
-    public void updateProfile(View v) {
+    public void updateEmail(View v) {
         if(CustomValidator.validateEmail(emailLayout)) {
-            if(CustomValidator.validatePassword(passwordLayout)) {
-                if(CustomValidator.validateRetypedPassword(passwordLayout, rePasswordLayout)) {
-                    Toast.makeText(this, "Ažuriran profil!", Toast.LENGTH_SHORT).show();
-                }
+            HashMap<String, String> user = new HashMap<>();
+            String userId = shared.getString("id", "");
+            user.put("email", emailText.getText().toString());
+            user.put("id", userId);
+
+            final ProgressDialog progressDialog = new ProgressDialog(EditProfileActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Promjena korisničkog email-a...");
+            progressDialog.show();
+
+            /* upload new image to Imgur server */
+            JsonObjectRequest jor = new JsonObjectRequest(
+                    Request.Method.POST, Constants.API_URL + "db/update", new JSONObject(user),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String status = response.getString("status");
+                                progressDialog.cancel();
+                                Toast.makeText(EditProfileActivity.this, "Uspješno ažuriran profil!", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("VOLLEY", "Error");
+                        }
+                    }
+            );
+            /* Add request to Volley asynchronous queue */
+            NetworkQueue.getInstance(this).addToRequestQueue(jor);
+        }
+    }
+
+    public void updatePassword(View v) {
+        if(CustomValidator.validatePassword(passwordLayout)) {
+            if(CustomValidator.validateRetypedPassword(passwordLayout, rePasswordLayout)) {
+                HashMap<String, String> user = new HashMap<>();
+                String userId = shared.getString("id", "");
+                user.put("password", emailText.getText().toString());
+                user.put("id", userId);
+
+                final ProgressDialog progressDialog = new ProgressDialog(EditProfileActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Promjena korisničke šifre...");
+                progressDialog.show();
+
+                /* upload new image to Imgur server */
+                JsonObjectRequest jor = new JsonObjectRequest(
+                        Request.Method.POST, Constants.API_URL + "db/update", new JSONObject(user),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    String status = response.getString("status");
+                                    progressDialog.cancel();
+                                    Toast.makeText(EditProfileActivity.this, "Uspješno ažuriran profil!", Toast.LENGTH_SHORT).show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.e("VOLLEY", "Error");
+                            }
+                        }
+                );
+                /* Add request to Volley asynchronous queue */
+                NetworkQueue.getInstance(this).addToRequestQueue(jor);
             }
         }
     }
