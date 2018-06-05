@@ -18,12 +18,13 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         android:theme="@style/AppTheme.NoActionBar"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -50,11 +51,12 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="120dp"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -81,12 +83,13 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="212dp"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         app:errorEnabled="true"
 
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -113,7 +116,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="312dp"
+        android:layout_marginTop="292dp"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         app:errorEnabled="true"
@@ -145,6 +148,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="24dp"
         android:background="#4779b2"
         android:onClick="createAccount"
         android:text="@string/button_signup"
@@ -152,7 +156,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="500dp" />
+        app:layout_constraintTop_toBottomOf="@+id/telephoneNumberField" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/telephoneNumberField"
@@ -162,7 +166,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="396dp"
+        android:layout_marginTop="376dp"
         android:textColorHint="#e8e8ed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -192,7 +196,7 @@
         android:layout_marginLeft="112dp"
         android:layout_marginRight="110dp"
         android:layout_marginStart="112dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:onClick="backToLogin"
         android:text="@string/option_login"
         android:textColor="#e8e8ed"

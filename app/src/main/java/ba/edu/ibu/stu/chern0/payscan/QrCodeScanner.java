@@ -1,16 +1,26 @@
 package ba.edu.ibu.stu.chern0.payscan;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -43,12 +53,33 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
 
     @Override
     public void handleResult(Result rawResult) {
-        Log.e("result", rawResult.getText());
-        Log.e("format", rawResult.getBarcodeFormat().toString());
-        Intent intent = new Intent();
-        intent.putExtra("text", rawResult.getText());
-        Toast.makeText(this, rawResult.getText(), Toast.LENGTH_LONG).show();
-        setResult(RESULT_OK, intent);
-        finish();
+
+        try {
+            JSONObject productData = new JSONObject(rawResult.toString());
+            /* create a new alert */
+            AlertDialog.Builder builder = new AlertDialog.Builder(QrCodeScanner.this);
+            builder.setMessage("Ime artikla: " + productData.getString("name") + "\n"
+                             + "Cijena: " + productData.getString("price") + "\n"
+                             + "Prodavač: " + productData.getString("seller") + "\n"
+                             + "Da li želite kupiti ovaj artikal?").setTitle("Detalji artikla");
+            /* add new buttons */
+            builder.setPositiveButton("Kupi", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(QrCodeScanner.this, "Artikal uspješno kupljen!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

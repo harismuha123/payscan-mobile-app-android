@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+
+import java.util.Hashtable;
 
 public class ProductQrCode extends AppCompatActivity {
     private ImageView productQr;
@@ -23,10 +26,13 @@ public class ProductQrCode extends AppCompatActivity {
         Intent intent = getIntent();
         String product = intent.getStringExtra("product");
 
+        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+
         /* Generate QR code from JSON product data */
         QRCodeWriter writer = new QRCodeWriter();
         try {
-            BitMatrix bitMatrix = writer.encode(product, BarcodeFormat.QR_CODE, 512, 512);
+            BitMatrix bitMatrix = writer.encode(product, BarcodeFormat.QR_CODE, 512, 512, hints);
             int width = bitMatrix.getWidth();
             int height = bitMatrix.getHeight();
             Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
