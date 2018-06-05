@@ -84,7 +84,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         shared = this.getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
         String username = shared.getString("username", "");
         String email = shared.getString("email", "");
-        String picture = shared.getString("image", "");
+        String picture = shared.getString("profile_image", "");
 
         //    initCollapsingToolbar();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -386,6 +386,10 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 Intent intent = new Intent(ProductDrawer.this, QrCodeScanner.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_edit:
+                Intent intent2 = new Intent(ProductDrawer.this, EditProfileActivity.class);
+                startActivity(intent2);
+                break;
             default:
                 int id = categories.get(item.getTitle());
                 Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);
@@ -454,7 +458,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                             public void onResponse(JSONObject response) {
                                 try {
                                     String imageLink = response.getString("link");
-                                    shared.edit().putString("image", imageLink).apply();
+                                    shared.edit().putString("profile_image", imageLink).apply();
                                     progressDialog.cancel();
                                     Glide.with(ProductDrawer.this).load(imageLink)
                                             .apply(new RequestOptions()
@@ -482,5 +486,12 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         }else {
             Toast.makeText(this, "You haven't picked an image",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        String email = shared.getString("email", "");
+        emailText.setText(email);
     }
 }
