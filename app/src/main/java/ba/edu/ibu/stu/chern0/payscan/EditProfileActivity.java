@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements View.OnFocusChangeListener{
 
     private TextInputLayout emailLayout, passwordLayout, rePasswordLayout;
     private TextInputEditText emailText, passwordText, rePasswordText;
@@ -42,8 +43,14 @@ public class EditProfileActivity extends AppCompatActivity {
         emailLayout = findViewById(R.id.editEmailField);
         passwordLayout = findViewById(R.id.editPasswordField);
         rePasswordLayout = findViewById(R.id.confirmPasswordField);
-
         emailText = findViewById(R.id.emailText);
+        passwordText = findViewById(R.id.passwordText);
+        rePasswordText = findViewById(R.id.confirmPasswordText);
+
+        emailText.setOnFocusChangeListener(this);
+        passwordText.setOnFocusChangeListener(this);
+        rePasswordText.setOnFocusChangeListener(this);
+
         emailText.setText(shared.getString("email", ""));
 
         setPasswordTypeface();
@@ -71,6 +78,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             try {
                                 String status = response.getString("status");
                                 progressDialog.cancel();
+                                shared.edit().putString("email", emailText.getText().toString()).apply();
                                 Toast.makeText(EditProfileActivity.this, "Uspješno ažuriran profil!", Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -94,7 +102,7 @@ public class EditProfileActivity extends AppCompatActivity {
             if(CustomValidator.validateRetypedPassword(passwordLayout, rePasswordLayout)) {
                 HashMap<String, String> user = new HashMap<>();
                 String userId = shared.getString("id", "");
-                user.put("password", emailText.getText().toString());
+                user.put("password", passwordText.getText().toString());
                 user.put("id", userId);
 
                 final ProgressDialog progressDialog = new ProgressDialog(EditProfileActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
@@ -112,6 +120,8 @@ public class EditProfileActivity extends AppCompatActivity {
                                 try {
                                     String status = response.getString("status");
                                     progressDialog.cancel();
+                                    passwordText.setText("");
+                                    rePasswordText.setText("");
                                     Toast.makeText(EditProfileActivity.this, "Uspješno ažuriran profil!", Toast.LENGTH_SHORT).show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -140,5 +150,16 @@ public class EditProfileActivity extends AppCompatActivity {
     private void setPasswordTypeface() {
         emailLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
         passwordLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
+        rePasswordLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+        /* hide soft keyboard when both fields lose focus */
+        if (!emailText.hasFocus() && !passwordText.hasFocus() && !rePasswordText.hasFocus()) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 }
