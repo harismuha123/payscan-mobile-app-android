@@ -30,12 +30,14 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
     private EditText password;
     private EditText name;
     private EditText rePassword;
+    private EditText phoneNumber;
 
     /* input layouts (Material Design */
     private TextInputLayout passwordLayout;
     private TextInputLayout nameLayout;
     private TextInputLayout emailLayout;
     private TextInputLayout rePasswordLayout;
+    private TextInputLayout phoneNumberLayout;
 
     /* check for attempted sign up */
     private boolean hasSignUp = false;
@@ -62,7 +64,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
     @Override
     public void onFocusChange(View v, boolean b) {
         /* hide soft keyboard when all fields lose focus */
-        if (!email.hasFocus() && !password.hasFocus() && !name.hasFocus() && !rePassword.hasFocus()) {
+        if (!email.hasFocus() && !password.hasFocus() && !name.hasFocus() && !rePassword.hasFocus() && !phoneNumber.hasFocus()) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
@@ -93,6 +95,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
         emailLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
         passwordLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
         rePasswordLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
+        phoneNumberLayout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Raleway-Light.ttf"));
     }
 
     /* Bind views to their XML components */
@@ -101,11 +104,13 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
         password = findViewById(R.id.textPassword);
         rePassword = findViewById(R.id.textRePassword);
         name = findViewById(R.id.textName);
+        phoneNumber = findViewById(R.id.textPhoneNumber);
 
         emailLayout = findViewById(R.id.emailLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
         rePasswordLayout = findViewById(R.id.rePasswordLayout);
         nameLayout = findViewById(R.id.nameLayout);
+        phoneNumberLayout = findViewById(R.id.telephoneNumberField);
         setPasswordTypeface();
 
         /* set listeners on EditText fields */
@@ -113,6 +118,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
         password.setOnFocusChangeListener(this);
         rePassword.setOnFocusChangeListener(this);
         name.setOnFocusChangeListener(this);
+        phoneNumber.setOnFocusChangeListener(this);
     }
 
     /* onclick function which starts the sign up process */
@@ -131,6 +137,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
             data.put("user_name", name.getText().toString());
             data.put("email", email.getText().toString());
             data.put("password", password.getText().toString());
+            data.put("phone_number", phoneNumber.getText().toString());
 
             JsonObjectRequest jor = new JsonObjectRequest(
                     Request.Method.POST, Constants.API_URL + "db/add", new JSONObject(data),

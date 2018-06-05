@@ -120,14 +120,13 @@ public class CreateArticleActivity extends AppCompatActivity {
         product.put("picture", shared.getString("image", ""));
 
         /* Start the process of uploading product data */
-        final ProgressDialog progressDialog = new ProgressDialog(CreateArticleActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Dodavanje novog proizvoda...");
-        progressDialog.show();
-
         if(validateFields(categoryText.getText().toString(), articleNameText.getText().toString(), priceText.getText().toString(), locationText.getText().toString())) {
             if(validateCategories(categoryText.getText().toString())) {
+                final ProgressDialog progressDialog = new ProgressDialog(CreateArticleActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Dodavanje novog proizvoda...");
+                progressDialog.show();
                 /* Make a request if everything is valid */
                 JsonObjectRequest jor = new JsonObjectRequest(
                         Request.Method.POST, Constants.API_URL + "db/products/add", new JSONObject(product),

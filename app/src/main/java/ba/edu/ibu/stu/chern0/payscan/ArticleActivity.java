@@ -2,6 +2,7 @@ package ba.edu.ibu.stu.chern0.payscan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,12 +36,12 @@ public class ArticleActivity extends AppCompatActivity {
     private TextView articleName, priceText, locationText,
                      categoryText, sellerText, detailText;
     private JSONObject product;
+    private SharedPreferences shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-
         intent = getIntent();
         linkArray = intent.getStringExtra("link").split("/");
         articleID = linkArray[4];
@@ -127,5 +128,13 @@ public class ArticleActivity extends AppCompatActivity {
     public void openProfile(View v) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.olx.ba/profil/"+sellerText.getText().toString()));
         startActivity(intent);
+    }
+
+    public void callUser(View v) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + 333));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }

@@ -108,16 +108,17 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/rePasswordLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="74dp"
         android:layout_marginEnd="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="312dp"
         android:textColor="#ffffff"
         android:textColorHint="#e8e8ed"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -144,14 +145,43 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="28dp"
         android:background="#4779b2"
         android:onClick="createAccount"
         android:text="@string/button_signup"
         android:textColor="#e8e8ed"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rePasswordLayout" />
+        tools:layout_editor_absoluteY="500dp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/telephoneNumberField"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="396dp"
+        android:textColorHint="#e8e8ed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/textPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_phone_black_24dp"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/ic_phone_black_24dp"
+            android:ems="10"
+            android:hint="Telefonski broj"
+            android:inputType="textPersonName"
+            android:textColorHint="#e8e8ed" />
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/account"
@@ -162,13 +192,14 @@
         android:layout_marginLeft="112dp"
         android:layout_marginRight="110dp"
         android:layout_marginStart="112dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:onClick="backToLogin"
         android:text="@string/option_login"
         android:textColor="#e8e8ed"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signupButton"
         tools:ignore="MissingPrefix" />
+
 </android.support.constraint.ConstraintLayout>
