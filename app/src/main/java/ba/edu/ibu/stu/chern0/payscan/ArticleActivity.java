@@ -37,6 +37,7 @@ public class ArticleActivity extends AppCompatActivity {
                      categoryText, sellerText, detailText;
     private JSONObject product;
     private SharedPreferences shared;
+    private String sellerPhone, payScanUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class ArticleActivity extends AppCompatActivity {
         bindViews();
 
         getProductData(articleID);
+
     }
 
     private void getProductData(String articleID) {
@@ -69,6 +71,24 @@ public class ArticleActivity extends AppCompatActivity {
                             String productSeller = response.getString("seller");
                             String productImage = response.getString("picture");
                             String productDescription = response.getString("description");
+                            payScanUser = response.getString("payscan_user");
+
+                            /* Either open the user's profile or show his/her phone number */
+                            sellerText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (payScanUser.equals("1")) {
+                                        try {
+                                            sellerPhone = product.getString("phone_number");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        callUser(sellerPhone);
+                                    } else {
+                                        openProfile();
+                                    }
+                                }
+                            });
 
                             Glide.with(ArticleActivity.this).load(Uri.parse(productImage)).into(articleImage);
                             articleName.setText(productName);
@@ -125,14 +145,14 @@ public class ArticleActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openProfile(View v) {
+    public void openProfile() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.olx.ba/profil/"+sellerText.getText().toString()));
         startActivity(intent);
     }
 
-    public void callUser(View v) {
+    public void callUser(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + 333));
+        intent.setData(Uri.parse("tel:" + phoneNumber));
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }

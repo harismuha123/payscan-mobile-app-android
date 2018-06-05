@@ -104,7 +104,6 @@
         android:background="@drawable/rounded_corner"
         android:gravity="right|center"
         android:maxLines="70"
-        android:onClick="openProfile"
         android:paddingEnd="16dp"
         android:paddingRight="16dp"
         android:scrollbars="vertical"
