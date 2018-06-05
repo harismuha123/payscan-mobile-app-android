@@ -123,4 +123,9 @@ public class ArticleActivity extends AppCompatActivity {
         intent.putExtra("product", product.toString());
         startActivity(intent);
     }
+
+    public void openProfile(View v) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.olx.ba/profil/"+sellerText.getText().toString()));
+        startActivity(intent);
+    }
 }
