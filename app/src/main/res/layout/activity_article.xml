@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sellerText" />
 
     <TextView
-        android:id="@+id/priceText"
+        android:id="@+id/priceTransText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/rounded_corner"
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceText" />
+        app:layout_constraintTop_toBottomOf="@+id/priceTransText" />
 
     <TextView
         android:id="@+id/categoryText"
@@ -125,7 +125,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/priceText" />
+        app:layout_constraintTop_toTopOf="@+id/priceTransText" />
 
     <TextView
         android:id="@+id/locationTag"

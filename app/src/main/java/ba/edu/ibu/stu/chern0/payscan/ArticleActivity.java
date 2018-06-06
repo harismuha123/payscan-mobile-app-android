@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,15 +19,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.chrisbanes.photoview.PhotoView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -143,7 +138,7 @@ public class ArticleActivity extends AppCompatActivity {
         articleImage = findViewById(R.id.articleImage);
         articleName = findViewById(R.id.articleName);
 
-        priceText = findViewById(R.id.priceText);
+        priceText = findViewById(R.id.priceTransText);
         locationText = findViewById(R.id.locationText);
         categoryText = findViewById(R.id.categoryText);
         sellerText = findViewById(R.id.sellerText);

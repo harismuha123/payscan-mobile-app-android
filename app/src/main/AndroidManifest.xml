@@ -16,38 +16,39 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:screenOrientation="portrait"
-            android:name=".LogInScreen">
+            android:name=".LogInScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".RegisterAccount" />
+            android:name=".RegisterAccount"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ProductView" />
+            android:name=".ProductView"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProductDrawer"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_product_drawer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ArticleActivity" />
+            android:name=".ArticleActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".CreateArticleActivity" />
+            android:name=".CreateArticleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".QrCodeScanner" />
         <activity
-            android:name=".QrCodeScanner" />
+            android:name=".ProductQrCode"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ProductQrCode" />
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".EditProfileActivity" />
+            android:name=".EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".TransactionListActivity"></activity>
     </application>
 
 </manifest>
