@@ -45,6 +45,7 @@ public class ProductView extends AppCompatActivity {
     private List<Product> productList;
     private int category;
     private Intent intent;
+    private String categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class ProductView extends AppCompatActivity {
         /* get category from previous activity */
         intent = getIntent();
         category = intent.getIntExtra("category", 1);
+        categoryName = intent.getStringExtra("category_name");
 
         /* Create the RecyclerView & product list */
         recyclerView = findViewById(R.id.recycler_view);
@@ -111,7 +113,7 @@ public class ProductView extends AppCompatActivity {
                 if (scrollRange == -1)
                     scrollRange = appBarLayout.getTotalScrollRange();
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(getString(R.string.app_name));
+                    collapsingToolbarLayout.setTitle(categoryName);
                     isShown = true;
                 } else if (isShown) {
                     collapsingToolbarLayout.setTitle("");

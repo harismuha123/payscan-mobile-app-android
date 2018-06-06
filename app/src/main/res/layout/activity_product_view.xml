@@ -31,6 +31,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="#4779b2"
                 app:layout_collapseMode="pin"
+                fontPath="fonts/Raleway-LightItalic.ttf"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             <RelativeLayout

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +22,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,12 +53,24 @@ public class ArticleActivity extends AppCompatActivity {
         intent = getIntent();
         linkArray = intent.getStringExtra("link").split("/");
         articleID = linkArray[4];
-        Log.i("link", Constants.API_URL + articleID);
 
         bindViews();
 
         getProductData(articleID);
 
+        /* Make an image zoomable */
+        articleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ArticleActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.zoomable_image, null);
+                PhotoView photoView = mView.findViewById(R.id.imageView);
+                photoView.setImageDrawable(articleImage.getDrawable());
+                mBuilder.setView(mView);
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
     }
 
     private void getProductData(String articleID) {

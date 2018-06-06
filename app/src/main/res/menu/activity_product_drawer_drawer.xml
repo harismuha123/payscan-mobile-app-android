@@ -54,7 +54,7 @@
                 android:title="Umjetnost" />
             <item
                 android:id="@+id/nav_sport"
-                android:title="Sportska operma" />
+                android:title="Sportska oprema" />
             <item
                 android:id="@+id/nav_tickets"
                 android:title="Karte" />

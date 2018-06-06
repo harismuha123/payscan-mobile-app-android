@@ -263,8 +263,9 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                          //  Log.i("DATA", response.toString());
                             JSONArray data = response.getJSONArray("products");
-                            if (data.length() > 1) {
+                            if (data.length() >= 1) {
                                 for (int i = 0; i < data.length(); i++) {
                                     /* Get individual JSON object and its attributes */
                                     JSONObject jsonObject = data.getJSONObject(i);
@@ -347,6 +348,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
                     SEARCH_PAGE = 1;
+                    PAGE = 1;
                     productList.clear();
                     adapter.notifyDataSetChanged();
                     getProductData();
@@ -396,6 +398,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 int id = categories.get(item.getTitle());
                 Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);
                 categoryIntent.putExtra("category", id);
+                categoryIntent.putExtra("category_name", item.getTitle());
                 startActivity(categoryIntent);
                 DrawerLayout drawer2 = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer2.closeDrawer(GravityCompat.START);
