@@ -14,6 +14,14 @@
                 android:icon="@drawable/ic_shopping_cart_black_24dp"
                 android:title="Kupi artikal" />
             <item
+                android:id="@+id/nav_articles"
+                android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+                android:title="Moji artikli" />
+            <item
+                android:id="@+id/nav_transactions"
+                android:icon="@drawable/ic_monetization_on_black_24dp"
+                android:title="Moje transakcije" />
+            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_reply_all_black_24dp"
                 android:title="@string/log_out_nav" />

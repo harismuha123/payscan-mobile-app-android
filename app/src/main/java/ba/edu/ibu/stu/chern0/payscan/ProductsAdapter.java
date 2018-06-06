@@ -18,13 +18,21 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     private OnBottomReachedListener onBottomReachedListener;
 
     private OnItemClickListener mListener;
+    private OnItemLongClickListener mLListener;
 
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
 
+    public interface OnItemLongClickListener{
+        void onItemLongClick(int position);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
+    }
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        mLListener = listener;
     }
 
     public ProductsAdapter(Context mContext, List<Product> productList) {
@@ -37,7 +45,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductViewHolder>{
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.product_card, parent, false);
-        return new ProductViewHolder(itemView, mListener);
+        return new ProductViewHolder(itemView, mListener, mLListener);
     }
 
     @Override

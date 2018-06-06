@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -73,7 +74,7 @@ public class CreateArticleActivity extends AppCompatActivity {
     private TextInputEditText articleNameText, priceText, locationText;
     private TextView descriptionText;
     private ImageView uploadImage;
-
+    private String productId;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,49 +107,143 @@ public class CreateArticleActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        Intent intent = getIntent();
+        productId = intent.getStringExtra("product_id");
+
+        if (productId != null) {
+            getProductData(productId);
+        }
+    }
+    private void getProductData(String articleID) {
+        /* Make a new request for a JSON object */
+        JsonObjectRequest jor = new JsonObjectRequest(
+                Request.Method.GET,Constants.API_URL + "product/"+ articleID, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            /* Get individual JSON object and its attributes */
+                            String productName = response.getString("name");
+                            String productPrice = response.getString("price");
+                            String productLocation  = response.getString("location");
+                            String productCategory = response.getString("category");
+                            String productSeller = response.getString("seller");
+                            String productImage = response.getString("picture");
+                            String productDescription = response.getString("description");
+
+                            Glide.with(CreateArticleActivity.this).load(Uri.parse(productImage)).into(uploadImage);
+                            shared.edit().putString("old_picture", productImage).apply();
+                            articleNameText.setText(productName);
+                            priceText.setText(productPrice);
+                            locationText.setText(productLocation);
+                            categoryText.setText(productCategory);
+                            descriptionText.setText(productDescription);
+
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.DEBUG = true;
+                        Log.e("VOLLEY", "Error");
+                    }
+                }
+        );
+        /* Add request to Volley asynchronous queue */
+        NetworkQueue.getInstance(this).addToRequestQueue(jor);
     }
 
     public void submitArticle(View v) {
-        /* get product details */
-        HashMap<String, String> product = new HashMap<>();
-        product.put("name", articleNameText.getText().toString());
-        product.put("price", priceText.getText().toString());
-        product.put("category", categoryText.getText().toString());
-        product.put("seller", shared.getString("id", ""));
-        product.put("location", locationText.getText().toString());
-        product.put("description", descriptionText.getText().toString());
-        product.put("picture", shared.getString("image", ""));
+        if (productId != null) {
+            /* get product details */
+            HashMap<String, String> product = new HashMap<>();
+            product.put("name", articleNameText.getText().toString());
+            product.put("price", priceText.getText().toString());
+            product.put("category", categoryText.getText().toString());
+            product.put("id", productId);
+            product.put("location", locationText.getText().toString());
+            product.put("description", descriptionText.getText().toString());
+            product.put("picture", shared.getString("old_picture", ""));
 
-        /* Start the process of uploading product data */
-        if(validateFields(categoryText.getText().toString(), articleNameText.getText().toString(), priceText.getText().toString(), locationText.getText().toString())) {
-            if(validateCategories(categoryText.getText().toString())) {
-                final ProgressDialog progressDialog = new ProgressDialog(CreateArticleActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
-                progressDialog.setIndeterminate(true);
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage("Dodavanje novog proizvoda...");
-                progressDialog.show();
-                /* Make a request if everything is valid */
-                JsonObjectRequest jor = new JsonObjectRequest(
-                        Request.Method.POST, Constants.API_URL + "db/products/add", new JSONObject(product),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(CreateArticleActivity.this, "Novi proizvod uspješno dodan.", Toast.LENGTH_LONG).show();
-                                progressDialog.cancel();
-                                Intent intent = new Intent(CreateArticleActivity.this, ProductDrawer.class);
-                                startActivity(intent);
-                                finish();
+            /* Start the process of uploading product data */
+            if(validateFields(categoryText.getText().toString(), articleNameText.getText().toString(), priceText.getText().toString(), locationText.getText().toString())) {
+                if(validateCategories(categoryText.getText().toString())) {
+                    final ProgressDialog progressDialog = new ProgressDialog(CreateArticleActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMessage("Dodavanje novog proizvoda...");
+                    progressDialog.show();
+                    /* Make a request if everything is valid */
+                    JsonObjectRequest jor = new JsonObjectRequest(
+                            Request.Method.POST, Constants.API_URL + "db/products/update", new JSONObject(product),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(CreateArticleActivity.this, "Podaci o artiklu uspješno izmijenjeni.", Toast.LENGTH_LONG).show();
+                                    progressDialog.cancel();
+                                    Intent intent = new Intent(CreateArticleActivity.this, ProductDrawer.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("VOLLEY", "Error");
+                                    Log.e("VOLLEY", error.networkResponse.toString());
+                                }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e("VOLLEY", "Error");
+                    );
+                    /* Add request to Volley asynchronous queue */
+                    NetworkQueue.getInstance(this).addToRequestQueue(jor);
+                }
+            }
+        } else {
+            /* get product details */
+            HashMap<String, String> product = new HashMap<>();
+            product.put("name", articleNameText.getText().toString());
+            product.put("price", priceText.getText().toString());
+            product.put("category", categoryText.getText().toString());
+            product.put("seller", shared.getString("id", ""));
+            product.put("location", locationText.getText().toString());
+            product.put("description", descriptionText.getText().toString());
+            product.put("picture", shared.getString("image", ""));
+
+            /* Start the process of uploading product data */
+            if(validateFields(categoryText.getText().toString(), articleNameText.getText().toString(), priceText.getText().toString(), locationText.getText().toString())) {
+                if(validateCategories(categoryText.getText().toString())) {
+                    final ProgressDialog progressDialog = new ProgressDialog(CreateArticleActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMessage("Dodavanje novog proizvoda...");
+                    progressDialog.show();
+                    /* Make a request if everything is valid */
+                    JsonObjectRequest jor = new JsonObjectRequest(
+                            Request.Method.POST, Constants.API_URL + "db/products/add", new JSONObject(product),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(CreateArticleActivity.this, "Novi proizvod uspješno dodan.", Toast.LENGTH_LONG).show();
+                                    progressDialog.cancel();
+                                    Intent intent = new Intent(CreateArticleActivity.this, ProductDrawer.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e("VOLLEY", "Error");
+                                }
                             }
-                        }
-                );
-                /* Add request to Volley asynchronous queue */
-                NetworkQueue.getInstance(this).addToRequestQueue(jor);
+                    );
+                    /* Add request to Volley asynchronous queue */
+                    NetworkQueue.getInstance(this).addToRequestQueue(jor);
+                }
             }
         }
     }
