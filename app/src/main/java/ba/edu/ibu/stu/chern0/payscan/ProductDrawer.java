@@ -394,6 +394,12 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 Intent intent2 = new Intent(ProductDrawer.this, EditProfileActivity.class);
                 startActivity(intent2);
                 break;
+            case R.id.nav_articles:
+                Intent intent3 = new Intent(ProductDrawer.this, UserProductView.class);
+                startActivity(intent3);
+                break;
+            case R.id.nav_transactions:
+                break;
             default:
                 int id = categories.get(item.getTitle());
                 Intent categoryIntent = new Intent(ProductDrawer.this, ProductView.class);

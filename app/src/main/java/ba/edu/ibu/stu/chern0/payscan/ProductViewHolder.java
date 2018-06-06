@@ -9,7 +9,7 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
     private TextView name, price;
     private ImageView thumbnail;
 
-    public ProductViewHolder(View view, final ProductsAdapter.OnItemClickListener listener) {
+    public ProductViewHolder(View view, final ProductsAdapter.OnItemClickListener listener, final ProductsAdapter.OnItemLongClickListener lListener) {
         super(view);
         name = view.findViewById(R.id.name);
         price = view.findViewById(R.id.price);
@@ -23,6 +23,19 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
                         listener.onItemClick(position);
                     }
                 }
+            }
+        });
+        /* handle long click on items */
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (lListener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        lListener.onItemLongClick(position);
+                    }
+                }
+                return true;
             }
         });
     }
