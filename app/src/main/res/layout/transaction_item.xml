@@ -1,112 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/transactionItem"
         android:layout_width="match_parent"
         android:layout_height="258dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corner"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/customerTag"
         android:layout_width="83dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Kupac"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="86dp" />
+        app:layout_constraintStart_toStartOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/articleTag" />
 
     <TextView
         android:id="@+id/sellerTag"
         android:layout_width="83dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Prodavač"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="132dp" />
+        app:layout_constraintStart_toStartOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/customerTag" />
 
     <TextView
         android:id="@+id/customerText"
         android:layout_width="190dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:gravity="right"
         android:textSize="12sp"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="86dp" />
+        app:layout_constraintEnd_toEndOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/articleNameText" />
 
     <TextView
         android:id="@+id/sellerTransText"
         android:layout_width="190dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:gravity="right"
         android:textSize="12sp"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="132dp" />
+        app:layout_constraintEnd_toEndOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/customerText" />
 
     <TextView
         android:id="@+id/priceTag"
         android:layout_width="83dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Novac"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="178dp" />
+        app:layout_constraintStart_toStartOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/sellerTag" />
 
     <TextView
         android:id="@+id/priceTransText"
         android:layout_width="190dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:gravity="right"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="178dp" />
+        app:layout_constraintEnd_toEndOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/sellerTransText" />
 
     <TextView
         android:id="@+id/articleTag"
         android:layout_width="83dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:text="Ime artikla"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintStart_toStartOf="@+id/transactionItem"
+        app:layout_constraintTop_toTopOf="@+id/transactionItem" />
 
     <TextView
         android:id="@+id/articleNameText"
         android:layout_width="190dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
         android:gravity="right"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintEnd_toEndOf="@+id/transactionItem"
+        app:layout_constraintTop_toTopOf="@+id/transactionItem" />
 
     <TextView
         android:id="@+id/timestampTag"
         android:layout_width="112dp"
         android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Vrijeme kupovine"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="224dp" />
+        app:layout_constraintStart_toStartOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/priceTag" />
 
     <TextView
         android:id="@+id/timestampText"
         android:layout_width="190dp"
         android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:gravity="right"
-        tools:layout_editor_absoluteX="205dp"
-        tools:layout_editor_absoluteY="224dp" />
+        app:layout_constraintEnd_toEndOf="@+id/transactionItem"
+        app:layout_constraintTop_toBottomOf="@+id/priceTransText" />
 
 </android.support.constraint.ConstraintLayout>
