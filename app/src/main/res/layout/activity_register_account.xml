@@ -184,6 +184,7 @@
             android:ems="10"
             android:hint="Telefonski broj"
             android:inputType="textPersonName"
+            android:textColor="#ffffff"
             android:textColorHint="#e8e8ed" />
     </android.support.design.widget.TextInputLayout>
 
