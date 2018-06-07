@@ -3,12 +3,16 @@ package ba.edu.ibu.stu.chern0.payscan;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -39,8 +43,10 @@ public class TransactionListActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.transaction_recycler);
         shared = getSharedPreferences("ba.edu.ibu.stu.chern0.payscan", Context.MODE_PRIVATE);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new GridLayoutManager(this, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
 
         mAdapter = new TransactionListAdapter(this, transactionList);
@@ -48,6 +54,12 @@ public class TransactionListActivity extends AppCompatActivity {
 
 
         getTransactionData();
+    }
+
+    /* Convert dp to pixels */
+    public int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     /* Get data from our API */
