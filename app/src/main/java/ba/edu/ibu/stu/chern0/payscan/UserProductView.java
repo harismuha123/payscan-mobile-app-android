@@ -24,13 +24,17 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -134,6 +138,40 @@ public class UserProductView extends AppCompatActivity {
                         Intent intent = new Intent(UserProductView.this, CreateArticleActivity.class);
                         intent.putExtra("product_id", productId);
                         startActivity(intent);
+                    }
+                });
+                builder.setNeutralButton("Prodaj", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        /* Get product data and generate QR code */
+                        JsonObjectRequest jor = new JsonObjectRequest(
+                                Request.Method.GET,Constants.API_URL + "product/"+ productId, null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            Intent intent = new Intent(UserProductView.this, ProductQrCode.class);
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                                            String format = simpleDateFormat.format(new Date());
+                                            response.put("timestamp", format);
+                                            intent.putExtra("product", response.toString());
+                                            startActivity(intent);
+                                        } catch(JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        VolleyLog.DEBUG = true;
+                                        Log.e("VOLLEY", "Error");
+                                        Toast.makeText(UserProductView.this, "Došlo je do greške prilikom slanja zahtjeva.", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
+                        /* Add request to Volley asynchronous queue */
+                        NetworkQueue.getInstance(UserProductView.this).addToRequestQueue(jor);
                     }
                 });
                 AlertDialog dialog = builder.create();

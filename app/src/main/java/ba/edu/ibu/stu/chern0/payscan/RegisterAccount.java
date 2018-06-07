@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -127,6 +129,8 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
         hasSignUp = true;
 
         if (CustomValidator.isValid(nameLayout, emailLayout, passwordLayout, rePasswordLayout)) {
+            final Button button = findViewById(R.id.signupButton);
+            button.setEnabled(false);
             final ProgressDialog progressDialog = new ProgressDialog(RegisterAccount.this, R.style.Theme_AppCompat_DayNight_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
@@ -144,6 +148,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            button.setEnabled(true);
                             try {
                                 String status = response.getString("status");
                                 if (status.equals("success")) {
@@ -166,6 +171,9 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
                         }
                     }
             );
+            /* prevent multiple requests from firing */
+            jor.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             /* Add request to Volley asynchronous queue */
             NetworkQueue.getInstance(this).addToRequestQueue(jor);
         } else {
