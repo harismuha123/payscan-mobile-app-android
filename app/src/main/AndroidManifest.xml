@@ -48,9 +48,9 @@
         <activity
             android:name=".EditProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".TransactionListActivity"></activity>
+        <activity
             android:screenOrientation="portrait"
-            android:name=".EditProfileActivity" />
+            android:name=".TransactionListActivity" />
         <activity
             android:screenOrientation="portrait"
             android:name=".UserProductView" />

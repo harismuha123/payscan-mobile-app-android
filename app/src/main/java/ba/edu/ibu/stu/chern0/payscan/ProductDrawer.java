@@ -387,8 +387,6 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             case R.id.nav_scan:
                 Intent intent = new Intent(ProductDrawer.this, QrCodeScanner.class);
                 startActivity(intent);
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_edit:
                 Intent intent2 = new Intent(ProductDrawer.this, EditProfileActivity.class);
@@ -399,6 +397,8 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 startActivity(intent3);
                 break;
             case R.id.nav_transactions:
+                Intent transactionIntent = new Intent(ProductDrawer.this, TransactionListActivity.class);
+                startActivity(transactionIntent);
                 break;
             default:
                 int id = categories.get(item.getTitle());
@@ -406,8 +406,6 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 categoryIntent.putExtra("category", id);
                 categoryIntent.putExtra("category_name", item.getTitle());
                 startActivity(categoryIntent);
-                DrawerLayout drawer2 = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer2.closeDrawer(GravityCompat.START);
         }
         return true;
     }
@@ -497,6 +495,13 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         }else {
             Toast.makeText(this, "You haven't picked an image",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
