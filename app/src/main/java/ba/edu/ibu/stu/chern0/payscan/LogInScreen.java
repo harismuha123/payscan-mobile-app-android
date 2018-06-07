@@ -134,7 +134,7 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                     /* get current user's username and save to SharedPreferences*/
                                     String username = response.getString("user_name");
                                     shared.edit().putString("username", username).apply();
-                                    String email = response.getString(" email");
+                                    String email = response.getString("email");
                                     shared.edit().putString("email", email).apply();
                                     String id = response.getString("id");
                                     shared.edit().putString("id", id).apply();
