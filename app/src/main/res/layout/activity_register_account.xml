@@ -183,7 +183,7 @@
             android:drawableStart="@drawable/ic_phone_black_24dp"
             android:ems="10"
             android:hint="Telefonski broj"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textColor="#ffffff"
             android:textColorHint="#e8e8ed" />
     </android.support.design.widget.TextInputLayout>
