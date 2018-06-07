@@ -74,6 +74,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     private ImageView profilePicture;
     private static int RESULT_LOAD_IMAGE = 16;
     private String searchTerm;
+    private boolean toEdit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -511,5 +512,23 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         super.onResume();
         String email = shared.getString("email", "");
         emailText.setText(email);
+
+        /* if there had been a deletion on the previous activity, refresh products */
+        if (shared.getBoolean("deleted", false)) {
+            productList.clear();
+            adapter.notifyDataSetChanged();
+            PAGE = 1;
+            getProductData();
+            shared.edit().remove("deleted").apply();
+        }
+
+        /* if there had been a purchase on the previous activity, refresh products */
+        if (shared.getBoolean("purchased", false)) {
+            productList.clear();
+            adapter.notifyDataSetChanged();
+            PAGE = 1;
+            getProductData();
+            shared.edit().remove("purchased").apply();
+        }
     }
 }

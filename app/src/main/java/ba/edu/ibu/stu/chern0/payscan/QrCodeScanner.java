@@ -96,6 +96,7 @@ public class QrCodeScanner extends AppCompatActivity implements ZXingScannerView
                                 public void onResponse(JSONObject response) {
                                     Log.e("VOLLEY", response.toString());
                                     progressDialog.cancel();
+                                    shared.edit().putBoolean("purchased", true).apply();
                                     Toast.makeText(QrCodeScanner.this, "Artikal uspješno kupljen!", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }

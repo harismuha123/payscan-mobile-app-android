@@ -26,6 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class TransactionListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
@@ -100,5 +102,10 @@ public class TransactionListActivity extends AppCompatActivity {
         );
         /* Add request to Volley asynchronous queue */
         NetworkQueue.getInstance(this).addToRequestQueue(jor);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

@@ -99,6 +99,7 @@ public class UserProductView extends AppCompatActivity {
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 try {
+                                                    shared.edit().putBoolean("deleted", true).apply();
                                                     String data = response.getString("status");
                                                     progressDialog.cancel();
                                                     /* remove an article from the list */
@@ -248,7 +249,7 @@ public class UserProductView extends AppCompatActivity {
                                     /* Get individual JSON object and its attributes */
                                     JSONObject jsonObject = data.getJSONObject(i);
                                     String productName = jsonObject.getString("name");
-                                    String productPrice = jsonObject.getString("price");
+                                    String productPrice = jsonObject.getString("price") + " KM";
                                     String productPicture = jsonObject.getString("picture");
                                     String productLink = "https://www.olx.ba/artikal/" + jsonObject.getString("id");
 

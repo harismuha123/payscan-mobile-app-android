@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -125,7 +126,7 @@ public class CreateArticleActivity extends AppCompatActivity {
                         try {
                             /* Get individual JSON object and its attributes */
                             String productName = response.getString("name");
-                            String productPrice = response.getString("price");
+                            String productPrice = response.getString("price").split(" ")[0];
                             String productLocation  = response.getString("location");
                             String productCategory = response.getString("category");
                             String productSeller = response.getString("seller");
@@ -133,7 +134,7 @@ public class CreateArticleActivity extends AppCompatActivity {
                             String productDescription = response.getString("description");
 
                             Glide.with(CreateArticleActivity.this).load(Uri.parse(productImage)).into(uploadImage);
-                            shared.edit().putString("old_picture", productImage).apply();
+                            shared.edit().putString("image", productImage).apply();
                             articleNameText.setText(productName);
                             priceText.setText(productPrice);
                             locationText.setText(productLocation);
@@ -167,7 +168,7 @@ public class CreateArticleActivity extends AppCompatActivity {
             product.put("id", productId);
             product.put("location", locationText.getText().toString());
             product.put("description", descriptionText.getText().toString());
-            product.put("picture", shared.getString("old_picture", ""));
+            product.put("picture", shared.getString("image", ""));
 
             /* Start the process of uploading product data */
             if(validateFields(categoryText.getText().toString(), articleNameText.getText().toString(), priceText.getText().toString(), locationText.getText().toString())) {
@@ -325,9 +326,12 @@ public class CreateArticleActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.e("VOLLEY", "Error");
+                                Log.e("VOLLEY", error.toString());
                             }
                         }
                 );
+                jor.setRetryPolicy(new DefaultRetryPolicy(60 * 1000, 0,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 /* Add request to Volley asynchronous queue */
                 NetworkQueue.getInstance(this).addToRequestQueue(jor);
             } catch (FileNotFoundException e) {
