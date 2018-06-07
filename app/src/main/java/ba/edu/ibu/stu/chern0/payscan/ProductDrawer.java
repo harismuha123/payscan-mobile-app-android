@@ -35,6 +35,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -306,7 +307,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         shared.edit().clear().apply();
         /* go back to log in screen */
         Intent loginIntent = new Intent(ProductDrawer.this, LogInScreen.class);
-        Toast.makeText(ProductDrawer.this, "You are now logged out.", Toast.LENGTH_LONG).show();
+        Toast.makeText(ProductDrawer.this, "Odjavljeni ste.", Toast.LENGTH_LONG).show();
         startActivity(loginIntent);
         finish();
     }
@@ -333,6 +334,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint("Pretraga...");
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             @Override
@@ -414,9 +416,9 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     public void changeProfilePicture(View view) {
         /* create a new alert */
         AlertDialog.Builder builder = new AlertDialog.Builder(ProductDrawer.this);
-        builder.setMessage("Would you like to change your profile picture?").setTitle("Upload a photo");
+        builder.setMessage("Želite li promijeniti Vašu profilnu sliku?").setTitle("Dodavanje slike");
         /* add new buttons */
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent photoPicker = new Intent(Intent.ACTION_PICK);
@@ -424,7 +426,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 startActivityForResult(photoPicker, RESULT_LOAD_IMAGE);
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -451,7 +453,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 final ProgressDialog progressDialog = new ProgressDialog(ProductDrawer.this, R.style.Theme_AppCompat_DayNight_Dialog);
                 progressDialog.setIndeterminate(true);
                 progressDialog.setCancelable(false);
-                progressDialog.setMessage("Uploading profile picture...");
+                progressDialog.setMessage("Dodavanje profilne slike...");
                 progressDialog.show();
 
                 HashMap<String, String> user = new HashMap<>();
@@ -489,11 +491,11 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                 NetworkQueue.getInstance(this).addToRequestQueue(jor);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Nešto je pošlo po zlu.", Toast.LENGTH_LONG).show();
             }
 
         }else {
-            Toast.makeText(this, "You haven't picked an image",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Niste odabrali sliku.",Toast.LENGTH_LONG).show();
         }
     }
 

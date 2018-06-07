@@ -332,11 +332,11 @@ public class CreateArticleActivity extends AppCompatActivity {
                 NetworkQueue.getInstance(this).addToRequestQueue(jor);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Nešto je pošlo po zlu.", Toast.LENGTH_LONG).show();
             }
 
         }else {
-            Toast.makeText(this, "You haven't picked an image",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Niste odabrali sliku.",Toast.LENGTH_LONG).show();
         }
     }
 

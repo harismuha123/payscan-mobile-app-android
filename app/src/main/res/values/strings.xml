@@ -3,7 +3,7 @@
     <string name="title_email">E-mail:</string>
     <string name="title_password">Šifra:</string>
     <string name="title_login">Prijavi se</string>
-    <string name="option_signup">\nNemaš račun? Kreiraj ga!</string>
+    <string name="option_signup">\nNemate račun? Kreirajte ga!</string>
     <string name="option_password">Zaboravili ste šifru?</string>
     <string name="placeholder_password">Šifra</string>
     <string name="placeholder_email">E-mail</string>
@@ -17,11 +17,11 @@
     <string name="API_URL">https://payscan-api.herokuapp.com/rest/products</string>
     <string name="log_out">Odjavi se</string>
     <string name="title_activity_product_drawer">Najnoviji proizvodi</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Otvori ladicu</string>
+    <string name="navigation_drawer_close">Zatvori ladicu</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_desc">Navigaciono zaglavlje</string>
     <string name="action_settings">Postavke</string>
     <string name="log_out_nav">Odjava</string>
     <string name="nav_account_info">Korisnički nalog</string>

@@ -115,7 +115,7 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
             final ProgressDialog progressDialog = new ProgressDialog(LogInScreen.this, R.style.Theme_AppCompat_DayNight_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
-            progressDialog.setMessage("Logging in...");
+            progressDialog.setMessage("Prijava...");
             progressDialog.show();
 
             HashMap<String, String> data = new HashMap<String, String>();
@@ -141,16 +141,16 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
                                     String picture = response.getString("image_path");
                                     shared.edit().putString("profile_image", picture).apply();
                                     /* make Toast message*/
-                                    Toast.makeText(LogInScreen.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LogInScreen.this, "Uspješno ste prijavljeni!", Toast.LENGTH_SHORT).show();
                                     Intent productView = new Intent(LogInScreen.this, ProductDrawer.class);
                                     startActivity(productView);
                                     finish();
                                 } else if (status.equals("pass_incorrect")) {
-                                    Toast.makeText(LogInScreen.this, "The password is incorrect.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LogInScreen.this, "Šifra nije tačna.", Toast.LENGTH_SHORT).show();
                                 } else if (status.equals("email_incorrect")) {
-                                    Toast.makeText(LogInScreen.this, "Entered email does not exist in the database.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LogInScreen.this, "Uneseni e-mail ne postoji u bazi.", Toast.LENGTH_SHORT).show();
                                 } else if (status.equals("not_activated")) {
-                                    Toast.makeText(LogInScreen.this, "Your account has not been activated yet.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LogInScreen.this, "Vaš račun još uvijek nije aktiviran.", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -167,7 +167,7 @@ public class LogInScreen extends AppCompatActivity implements View.OnFocusChange
             /* Add request to Volley asynchronous queue */
             NetworkQueue.getInstance(this).addToRequestQueue(jor);
         } else {
-            Toast.makeText(this, "Please enter proper credentials.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Molimo Vas da unesete pravilne podatke.", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -130,7 +130,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
             final ProgressDialog progressDialog = new ProgressDialog(RegisterAccount.this, R.style.Theme_AppCompat_DayNight_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
-            progressDialog.setMessage("Creating Account...");
+            progressDialog.setMessage("Kreiranje računa...");
             progressDialog.show();
 
             HashMap<String, String> data = new HashMap<String, String>();
@@ -148,11 +148,11 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
                                 String status = response.getString("status");
                                 if (status.equals("success")) {
                                     progressDialog.cancel();
-                                    Toast.makeText(RegisterAccount.this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterAccount.this, "Račun uspješno kreiran!", Toast.LENGTH_SHORT).show();
                                     finish();
                                 } else if (status.equals("duplicate")) {
                                     progressDialog.cancel();
-                                    Toast.makeText(RegisterAccount.this, "That email is already in use!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterAccount.this, "Uneseni e-mail se već koristi!", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -169,7 +169,7 @@ public class RegisterAccount extends AppCompatActivity implements View.OnFocusCh
             /* Add request to Volley asynchronous queue */
             NetworkQueue.getInstance(this).addToRequestQueue(jor);
         } else {
-            Toast.makeText(RegisterAccount.this, "Sign up failed! Please enter valid data!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterAccount.this, "Registracija neuspješna! Unesite validne podatke.", Toast.LENGTH_SHORT).show();
         }
 /*
         /* declare progress dialog and define the message
