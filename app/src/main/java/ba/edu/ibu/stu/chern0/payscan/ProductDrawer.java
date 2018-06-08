@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +71,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
     private List<Product> productList;
     private HashMap<String, Integer> categories;
     private SharedPreferences shared;
-    private TextView emailText, usernameText;
+    private TextView emailText, usernameText, balanceText;
     private ImageView profilePicture;
     private static int RESULT_LOAD_IMAGE = 16;
     private String searchTerm;
@@ -141,7 +142,10 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         /* Set logged in user's credentials inside navbar */
         emailText = headerView.findViewById(R.id.nav_email);
         usernameText = headerView.findViewById(R.id.nav_username);
+        balanceText = headerView.findViewById(R.id.balanceText);
         profilePicture = headerView.findViewById(R.id.profilePicture);
+
+        getUserBalance();
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -500,6 +504,32 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    public void getUserBalance() {
+        /* Make a new request for a JSON object */
+        JsonObjectRequest jor = new JsonObjectRequest(
+                Request.Method.GET,Constants.API_URL + "db/balance/" + shared.getString("id", ""), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            /* Get individual JSON object and its attributes */
+                            balanceText.setText(response.getString("balance"));
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("VOLLEY", "Error");
+                    }
+                }
+        );
+        /* Add request to Volley asynchronous queue */
+        NetworkQueue.getInstance(this).addToRequestQueue(jor);
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -528,6 +558,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
             adapter.notifyDataSetChanged();
             PAGE = 1;
             getProductData();
+            getUserBalance();
             shared.edit().remove("purchased").apply();
         }
     }
