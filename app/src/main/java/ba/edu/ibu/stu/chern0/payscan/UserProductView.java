@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -205,9 +206,11 @@ public class UserProductView extends AppCompatActivity {
     /* Show and hide toolbar on scroll */
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("");
+        collapsingToolbarLayout.setTitle(" ");
         AppBarLayout appBarLayout = findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
+        final ImageView imageView = findViewById(R.id.backdrop);
+        imageView.setImageResource(R.drawable.logo_rounded_white);
 
         /* show and hide toolbar title */
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -219,9 +222,11 @@ public class UserProductView extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbarLayout.setTitle("Moji proizvodi");
+                    imageView.setImageResource(android.R.color.transparent);
                     isShown = true;
                 } else if (isShown) {
-                    collapsingToolbarLayout.setTitle("");
+                    collapsingToolbarLayout.setTitle(" ");
+                    imageView.setImageResource(R.drawable.logo_rounded_white);
                     isShown = false;
                 }
             }

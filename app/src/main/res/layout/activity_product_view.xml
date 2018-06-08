@@ -45,7 +45,8 @@
                     android:background="@android:color/holo_blue_dark"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
-                    app:layout_collapseMode="parallax" />
+                    app:layout_collapseMode="parallax"
+                    tools:scaleType="centerInside" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
