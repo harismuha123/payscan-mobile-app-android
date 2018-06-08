@@ -64,9 +64,11 @@ public class UserProductView extends AppCompatActivity {
         adapter.setOnItemClickListener(new ProductsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(UserProductView.this, ArticleActivity.class);
-                intent.putExtra("link", productList.get(position).getLink().toString());
-                startActivity(intent);
+                if (!productList.get(position).getName().equals("Trenutno nemate artikala u prodaji.")) {
+                    Intent intent = new Intent(UserProductView.this, ArticleActivity.class);
+                    intent.putExtra("link", productList.get(position).getLink().toString());
+                    startActivity(intent);
+                }
             }
         });
         adapter.setOnItemLongClickListener(new ProductsAdapter.OnItemLongClickListener() {
@@ -266,6 +268,11 @@ public class UserProductView extends AppCompatActivity {
                             }
                         } catch(JSONException e) {
                             e.printStackTrace();
+                        }
+                        /* check whether the user has no products */
+                        if (productList.isEmpty()) {
+                            productList.add(new Product("Trenutno nemate artikala u prodaji.", "", Uri.parse("")));
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 },
