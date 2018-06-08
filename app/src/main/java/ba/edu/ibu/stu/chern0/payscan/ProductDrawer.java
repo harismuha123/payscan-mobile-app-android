@@ -513,7 +513,7 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
                     public void onResponse(JSONObject response) {
                         try {
                             /* Get individual JSON object and its attributes */
-                            balanceText.setText(response.getString("balance"));
+                            balanceText.setText("Trenutni balans: " + response.getString("balance") + " KM");
                         } catch(JSONException e) {
                             e.printStackTrace();
                         }
@@ -535,6 +535,12 @@ public class ProductDrawer extends AppCompatActivity implements NavigationView.O
         super.onStop();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        /* Uncheck menu items */
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
     }
 
     @Override
